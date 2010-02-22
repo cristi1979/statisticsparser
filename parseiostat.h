@@ -6,8 +6,9 @@
 class Parseiostat : public Parse
 {
 public:
-    Parseiostat(QByteArray name);
+    Parseiostat(QFileInfo name);
     Parseiostat();
+    void setStatsFilename(QFileInfo name);
     int run();
 
 private:

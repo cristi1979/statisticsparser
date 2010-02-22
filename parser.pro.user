@@ -56,10 +56,12 @@
   <variable>buildConfiguration-Debug</variable>
   <valuemap type="QVariantMap">
    <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString">Debug</value>
-   <value key="QtVersionId" type="int">0</value>
+   <value key="QtVersionId" type="int">6</value>
    <value key="ToolChain" type="int">2</value>
    <value key="addQDumper" type=""></value>
    <value key="buildConfiguration" type="int">2</value>
+   <value key="buildDirectory" type="QString"></value>
+   <value key="useShadowBuild" type="bool">false</value>
   </valuemap>
  </data>
  <data>
@@ -78,59 +80,79 @@
   <valuemap type="QVariantMap">
    <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString">Debug</value>
    <valuelist key="abstractProcess.Environment" type="QVariantList">
-    <value type="QString">ALLUSERSPROFILE=C:\Documents and Settings\All Users</value>
-    <value type="QString">APPDATA=C:\Documents and Settings\Administrator\Application Data</value>
-    <value type="QString">CATALINA_HOME=D:\mindtomcat\tomcat</value>
-    <value type="QString">CLIENTNAME=Console</value>
-    <value type="QString">COMMONPROGRAMFILES=C:\Program Files\Common Files</value>
-    <value type="QString">COMPUTERNAME=CFALCAS</value>
-    <value type="QString">COMSPEC=C:\WINDOWS\system32\cmd.exe</value>
-    <value type="QString">FP_NO_HOST_CHECK=NO</value>
-    <value type="QString">HOMEDRIVE=C:</value>
-    <value type="QString">HOMEPATH=\Documents and Settings\Administrator</value>
-    <value type="QString">INTEL_LICENSE_FILE=C:\Program Files\Common Files\Intel\Licenses</value>
-    <value type="QString">JAVA_HOME=C:\Program Files\Java\jdk1.6.0_14</value>
-    <value type="QString">LOGONSERVER=\\CFALCAS</value>
-    <value type="QString">MIND_CLCTDISP_HOME=d:\mindcti\cdrmc</value>
-    <value type="QString">MIND_COLLECTOR_HOME=d:\mindcti\cdrmc</value>
-    <value type="QString">MIND_JAVA_HOME=C:\Java\j2re1.4.1_07</value>
-    <value type="QString">MIND_ORA_HOME=E:\oracle\product\10.2.0\db_1</value>
-    <value type="QString">MIND_PROCESSOR_HOME=d:\mindcti\cdrmc</value>
-    <value type="QString">MIND_SYSATT_HOME=c:\mindcti\sysatt</value>
-    <value type="QString">NOPAUSE=true</value>
-    <value type="QString">NUMBER_OF_PROCESSORS=2</value>
-    <value type="QString">ORACLE_SID=BILL</value>
-    <value type="QString">OS=Windows_NT</value>
-    <value type="QString">PATH=C:\Qt\2009.05\qt\bin;E:\oracle\product\10.2.0\db_1\bin;C:\Perl\site\bin;C:\Perl\bin;C:\WINDOWS\system32;c:\Perl\bin;SystemRoot%;C:\WINDOWS\system32\WBEM;C:\Java\jdk1.5.0_10\bin;C:\Program Files\Symantec\pcAnywhere\;C:\MinGW\bin\;C:\Program Files\TortoiseSVN\bin;c:\cygwin\rrd;c:\mindcti\MINDJBoss;c:\Perl\bin;E:\oracle\product\10.2.0\db_1\bin;C:\Perl\site\bin;C:\Perl\bin;C:\WINDOWS\system32;c:\Perl\bin;SystemRoot%;C:\WINDOWS\system32\WBEM;C:\Java\jdk1.5.0_10\bin;C:\Program Files\Symantec\pcAnywhere\;C:\MinGW\bin\;C:\Program Files\TortoiseSVN\bin;c:\cygwin\rrd;c:\mindcti\MINDJBoss;C:\KDE\bin\;C:\Program Files\CVSNT\;C:\Program Files\OpenVPN\bin</value>
-    <value type="QString">PATHEXT=.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH</value>
-    <value type="QString">PERL5LIB=E:\oracle\product\10.2.0\db_1\perl\5.8.3\lib\MSWin32-x86;E:\oracle\product\10.2.0\db_1\perl\5.8.3\lib;E:\oracle\product\10.2.0\db_1\perl\5.8.3\lib\MSWin32-x86;E:\oracle\product\10.2.0\db_1\perl\site\5.8.3;E:\oracle\product\10.2.0\db_1\perl\site\5.8.3\lib;E:\oracle\product\10.2.0\db_1\sysman\admin\scripts</value>
-    <value type="QString">PROCESSOR_ARCHITECTURE=x86</value>
-    <value type="QString">PROCESSOR_IDENTIFIER=x86 Family 15 Model 4 Stepping 3, GenuineIntel</value>
-    <value type="QString">PROCESSOR_LEVEL=15</value>
-    <value type="QString">PROCESSOR_REVISION=0403</value>
-    <value type="QString">PROGRAMFILES=C:\Program Files</value>
-    <value type="QString">QTDIR=C:/Qt/2009.05/qt</value>
-    <value type="QString">SESSIONNAME=Console</value>
-    <value type="QString">SYSTEMDRIVE=C:</value>
-    <value type="QString">SYSTEMROOT=C:\WINDOWS</value>
-    <value type="QString">TEMP=C:\tmp\</value>
-    <value type="QString">TMP=C:\tmp\</value>
-    <value type="QString">USERDOMAIN=CFALCAS</value>
-    <value type="QString">USERNAME=Administrator</value>
-    <value type="QString">USERPROFILE=C:\Documents and Settings\Administrator</value>
-    <value type="QString">VBOX_INSTALL_PATH=C:\Program Files\Sun\VirtualBox\</value>
-    <value type="QString">WINDIR=C:\WINDOWS</value>
+    <value type="QString">ANT_HOME=/usr/share/ant</value>
+    <value type="QString">CONFIG_PROTECT=/usr/share/X11/xkb /var/lib/hsqldb /usr/share/config</value>
+    <value type="QString">CONFIG_PROTECT_MASK=/etc/gentoo-release /etc/sandbox.d /etc/env.d/java/ /etc/php/cli-php5/ext-active/ /etc/php/cgi-php5/ext-active/ /etc/php/apache2-php5/ext-active/ /etc/fonts/fonts.conf /etc/gconf /etc/terminfo /etc/ca-certificates.conf /etc/revdep-rebuild /etc/splash</value>
+    <value type="QString">CVS_RSH=ssh</value>
+    <value type="QString">DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-7aw9nE1WjH,guid=4122c25f4315b607a70f70694b80fd50</value>
+    <value type="QString">DESKTOP_SESSION=KDE-4</value>
+    <value type="QString">DISPLAY=:0.0</value>
+    <value type="QString">DM_CONTROL=/var/run/xdmctl</value>
+    <value type="QString">EDITOR=/bin/nano</value>
+    <value type="QString">GCC_SPECS=</value>
+    <value type="QString">GDK_USE_XFT=1</value>
+    <value type="QString">GS_LIB=/home/cristi/.fonts</value>
+    <value type="QString">GTK2_RC_FILES=/etc/gtk-2.0/gtkrc:/home/cristi/.gtkrc-2.0::/home/cristi/.kde4/share/config/gtkrc-2.0</value>
+    <value type="QString">GTK_RC_FILES=/etc/gtk/gtkrc:/home/cristi/.gtkrc::/home/cristi/.kde4/share/config/gtkrc</value>
+    <value type="QString">GUILE_LOAD_PATH=/usr/share/guile/1.8</value>
+    <value type="QString">HG=/usr/bin/hg</value>
+    <value type="QString">HOME=/home/cristi</value>
+    <value type="QString">INFOPATH=/usr/share/info:/usr/share/binutils-data/x86_64-pc-linux-gnu/2.20/info:/usr/share/gcc-data/x86_64-pc-linux-gnu/4.4.3/info</value>
+    <value type="QString">JAVAC=/etc/java-config-2/current-system-vm/bin/javac</value>
+    <value type="QString">JAVACC_HOME=/usr/share/javacc/</value>
+    <value type="QString">JAVA_HOME=/etc/java-config-2/current-system-vm</value>
+    <value type="QString">JDK_HOME=/etc/java-config-2/current-system-vm</value>
+    <value type="QString">KDE_FULL_SESSION=true</value>
+    <value type="QString">KDE_MULTIHEAD=false</value>
+    <value type="QString">KDE_SESSION_UID=1000</value>
+    <value type="QString">KDE_SESSION_VERSION=4</value>
+    <value type="QString">LANG=ro_RO.UTF-8</value>
+    <value type="QString">LC_ALL=ro_RO.UTF-8</value>
+    <value type="QString">LESS=-R -M --shift 5</value>
+    <value type="QString">LESSOPEN=|lesspipe.sh %s</value>
+    <value type="QString">LOGNAME=cristi</value>
+    <value type="QString">MANPATH=/etc/java-config-2/current-system-vm/man:/usr/local/share/man:/usr/share/man:/usr/share/binutils-data/x86_64-pc-linux-gnu/2.20/man:/usr/share/gcc-data/x86_64-pc-linux-gnu/4.4.3/man:/etc/java-config/system-vm/man/:/usr/lib64/php5/man/:/usr/lib64/erlang/man:/opt/opera/share/man</value>
+    <value type="QString">OPENGL_PROFILE=xorg-x11</value>
+    <value type="QString">PAGER=/usr/bin/less</value>
+    <value type="QString">PATH=/usr/bin:/usr/local/bin:/usr/bin:/bin:/opt/bin:/usr/x86_64-pc-linux-gnu/gcc-bin/4.4.3</value>
+    <value type="QString">PWD=/home/cristi</value>
+    <value type="QString">QTDIR=/usr/share/qt4</value>
+    <value type="QString">QT_PLUGIN_PATH=/home/cristi/.kde4/lib64/kde4/plugins/:/usr/lib64/kde4/plugins/</value>
+    <value type="QString">RUBYOPT=-rauto_gem</value>
+    <value type="QString">R_HOME=/usr/lib64/R</value>
+    <value type="QString">SANE_CONFIG_DIR=/etc/sane.d</value>
+    <value type="QString">SCHEME_LIBRARY_PATH=/usr/share/slib/</value>
+    <value type="QString">SESSION_MANAGER=local/gentoo:@/tmp/.ICE-unix/5582,unix/gentoo:/tmp/.ICE-unix/5582</value>
+    <value type="QString">SGML_CATALOG_FILES=/etc/sgml/xml-docbook-4.5.cat:/etc/sgml/xml-docbook-4.3.cat:/etc/sgml/sgml-ent.cat:/etc/sgml/sgml-lite.cat:/etc/sgml/xml-docbook-4.4.cat:/etc/sgml/sgml-docbook.cat:/etc/sgml/openjade-1.3.2.cat:/etc/sgml/dsssl-docbook-stylesheets.cat:/etc/sgml/xml-docbook-4.2.cat:/etc/sgml/xml-docbook-4.1.2.cat:/etc/sgml/sgml-docbook-3.1.cat</value>
+    <value type="QString">SHELL=/bin/bash</value>
+    <value type="QString">SHLVL=1</value>
+    <value type="QString">STRIGI_PLUGIN_PATH=/usr/lib64/strigi:</value>
+    <value type="QString">USB_DEVFS_PATH=/dev/bus/usb</value>
+    <value type="QString">USER=cristi</value>
+    <value type="QString">VBOX_APP_HOME=/usr/lib64/virtualbox-ose</value>
+    <value type="QString">WINDOWPATH=7</value>
+    <value type="QString">XCURSOR_THEME=Oxygen_Blue</value>
+    <value type="QString">XDG_CONFIG_DIRS=/etc/xdg</value>
+    <value type="QString">XDG_DATA_DIRS=/usr/share:/usr/local/share:/usr/share</value>
+    <value type="QString">XDG_SESSION_COOKIE=7dc672075882dc13e197461647b8a719-1266744656.183215-1102214607</value>
+    <value type="QString">XDM_MANAGED=method=classic</value>
+    <value type="QString">_=/usr/lib64/kde4/libexec/start_kdeinit_wrapper</value>
    </valuelist>
    <valuelist key="abstractProcess.arguments" type="QVariantList">
-    <value type="QString">D:/temp/parsers/parser/parser.pro</value>
+    <value type="QString">/home/cristi/work/parser/parser.pro</value>
     <value type="QString">-spec</value>
-    <value type="QString">win32-g++</value>
+    <value type="QString">linux-g++</value>
     <value type="QString">-r</value>
+    <value type="QString">CONFIG+=debug</value>
    </valuelist>
-   <value key="abstractProcess.command" type="QString">c:/qt/2009.05/qt/bin/qmake.exe</value>
-   <value key="abstractProcess.enabled" type="bool">true</value>
-   <value key="abstractProcess.workingDirectory" type="QString">D:/temp/parsers/parser</value>
+   <value key="abstractProcess.command" type="QString">/usr/bin/qmake</value>
+   <value key="abstractProcess.enabled" type="bool">false</value>
+   <value key="abstractProcess.workingDirectory" type="QString">/home/cristi/work/parser/debug</value>
    <value key="buildConfiguration" type=""></value>
+   <valuelist key="qmakeArgs" type="QVariantList">
+    <value type="QString">-spec</value>
+    <value type="QString">c:\Qt\2009.05\qt\mkspecs\win32-g++</value>
+   </valuelist>
   </valuemap>
  </data>
  <data>
@@ -138,56 +160,72 @@
   <valuemap type="QVariantMap">
    <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString">Debug</value>
    <valuelist key="abstractProcess.Environment" type="QVariantList">
-    <value type="QString">ALLUSERSPROFILE=C:\Documents and Settings\All Users</value>
-    <value type="QString">APPDATA=C:\Documents and Settings\Administrator\Application Data</value>
-    <value type="QString">CATALINA_HOME=D:\mindtomcat\tomcat</value>
-    <value type="QString">CLIENTNAME=Console</value>
-    <value type="QString">COMMONPROGRAMFILES=C:\Program Files\Common Files</value>
-    <value type="QString">COMPUTERNAME=CFALCAS</value>
-    <value type="QString">COMSPEC=C:\WINDOWS\system32\cmd.exe</value>
-    <value type="QString">FP_NO_HOST_CHECK=NO</value>
-    <value type="QString">HOMEDRIVE=C:</value>
-    <value type="QString">HOMEPATH=\Documents and Settings\Administrator</value>
-    <value type="QString">INTEL_LICENSE_FILE=C:\Program Files\Common Files\Intel\Licenses</value>
-    <value type="QString">JAVA_HOME=C:\Program Files\Java\jdk1.6.0_14</value>
-    <value type="QString">LOGONSERVER=\\CFALCAS</value>
-    <value type="QString">MIND_CLCTDISP_HOME=d:\mindcti\cdrmc</value>
-    <value type="QString">MIND_COLLECTOR_HOME=d:\mindcti\cdrmc</value>
-    <value type="QString">MIND_JAVA_HOME=C:\Java\j2re1.4.1_07</value>
-    <value type="QString">MIND_ORA_HOME=E:\oracle\product\10.2.0\db_1</value>
-    <value type="QString">MIND_PROCESSOR_HOME=d:\mindcti\cdrmc</value>
-    <value type="QString">MIND_SYSATT_HOME=c:\mindcti\sysatt</value>
-    <value type="QString">NOPAUSE=true</value>
-    <value type="QString">NUMBER_OF_PROCESSORS=2</value>
-    <value type="QString">ORACLE_SID=BILL</value>
-    <value type="QString">OS=Windows_NT</value>
-    <value type="QString">PATH=C:\Qt\2009.05\qt\bin;E:\oracle\product\10.2.0\db_1\bin;C:\Perl\site\bin;C:\Perl\bin;C:\WINDOWS\system32;c:\Perl\bin;SystemRoot%;C:\WINDOWS\system32\WBEM;C:\Java\jdk1.5.0_10\bin;C:\Program Files\Symantec\pcAnywhere\;C:\MinGW\bin\;C:\Program Files\TortoiseSVN\bin;c:\cygwin\rrd;c:\mindcti\MINDJBoss;c:\Perl\bin;E:\oracle\product\10.2.0\db_1\bin;C:\Perl\site\bin;C:\Perl\bin;C:\WINDOWS\system32;c:\Perl\bin;SystemRoot%;C:\WINDOWS\system32\WBEM;C:\Java\jdk1.5.0_10\bin;C:\Program Files\Symantec\pcAnywhere\;C:\MinGW\bin\;C:\Program Files\TortoiseSVN\bin;c:\cygwin\rrd;c:\mindcti\MINDJBoss;C:\KDE\bin\;C:\Program Files\CVSNT\;C:\Program Files\OpenVPN\bin</value>
-    <value type="QString">PATHEXT=.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH</value>
-    <value type="QString">PERL5LIB=E:\oracle\product\10.2.0\db_1\perl\5.8.3\lib\MSWin32-x86;E:\oracle\product\10.2.0\db_1\perl\5.8.3\lib;E:\oracle\product\10.2.0\db_1\perl\5.8.3\lib\MSWin32-x86;E:\oracle\product\10.2.0\db_1\perl\site\5.8.3;E:\oracle\product\10.2.0\db_1\perl\site\5.8.3\lib;E:\oracle\product\10.2.0\db_1\sysman\admin\scripts</value>
-    <value type="QString">PROCESSOR_ARCHITECTURE=x86</value>
-    <value type="QString">PROCESSOR_IDENTIFIER=x86 Family 15 Model 4 Stepping 3, GenuineIntel</value>
-    <value type="QString">PROCESSOR_LEVEL=15</value>
-    <value type="QString">PROCESSOR_REVISION=0403</value>
-    <value type="QString">PROGRAMFILES=C:\Program Files</value>
-    <value type="QString">QTDIR=C:/Qt/2009.05/qt</value>
-    <value type="QString">SESSIONNAME=Console</value>
-    <value type="QString">SYSTEMDRIVE=C:</value>
-    <value type="QString">SYSTEMROOT=C:\WINDOWS</value>
-    <value type="QString">TEMP=C:\tmp\</value>
-    <value type="QString">TMP=C:\tmp\</value>
-    <value type="QString">USERDOMAIN=CFALCAS</value>
-    <value type="QString">USERNAME=Administrator</value>
-    <value type="QString">USERPROFILE=C:\Documents and Settings\Administrator</value>
-    <value type="QString">VBOX_INSTALL_PATH=C:\Program Files\Sun\VirtualBox\</value>
-    <value type="QString">WINDIR=C:\WINDOWS</value>
+    <value type="QString">ANT_HOME=/usr/share/ant</value>
+    <value type="QString">CONFIG_PROTECT=/usr/share/X11/xkb /var/lib/hsqldb /usr/share/config</value>
+    <value type="QString">CONFIG_PROTECT_MASK=/etc/gentoo-release /etc/sandbox.d /etc/env.d/java/ /etc/php/cli-php5/ext-active/ /etc/php/cgi-php5/ext-active/ /etc/php/apache2-php5/ext-active/ /etc/fonts/fonts.conf /etc/gconf /etc/terminfo /etc/ca-certificates.conf /etc/revdep-rebuild /etc/splash</value>
+    <value type="QString">CVS_RSH=ssh</value>
+    <value type="QString">DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-7aw9nE1WjH,guid=4122c25f4315b607a70f70694b80fd50</value>
+    <value type="QString">DESKTOP_SESSION=KDE-4</value>
+    <value type="QString">DISPLAY=:0.0</value>
+    <value type="QString">DM_CONTROL=/var/run/xdmctl</value>
+    <value type="QString">EDITOR=/bin/nano</value>
+    <value type="QString">GCC_SPECS=</value>
+    <value type="QString">GDK_USE_XFT=1</value>
+    <value type="QString">GS_LIB=/home/cristi/.fonts</value>
+    <value type="QString">GTK2_RC_FILES=/etc/gtk-2.0/gtkrc:/home/cristi/.gtkrc-2.0::/home/cristi/.kde4/share/config/gtkrc-2.0</value>
+    <value type="QString">GTK_RC_FILES=/etc/gtk/gtkrc:/home/cristi/.gtkrc::/home/cristi/.kde4/share/config/gtkrc</value>
+    <value type="QString">GUILE_LOAD_PATH=/usr/share/guile/1.8</value>
+    <value type="QString">HG=/usr/bin/hg</value>
+    <value type="QString">HOME=/home/cristi</value>
+    <value type="QString">INFOPATH=/usr/share/info:/usr/share/binutils-data/x86_64-pc-linux-gnu/2.20/info:/usr/share/gcc-data/x86_64-pc-linux-gnu/4.4.3/info</value>
+    <value type="QString">JAVAC=/etc/java-config-2/current-system-vm/bin/javac</value>
+    <value type="QString">JAVACC_HOME=/usr/share/javacc/</value>
+    <value type="QString">JAVA_HOME=/etc/java-config-2/current-system-vm</value>
+    <value type="QString">JDK_HOME=/etc/java-config-2/current-system-vm</value>
+    <value type="QString">KDE_FULL_SESSION=true</value>
+    <value type="QString">KDE_MULTIHEAD=false</value>
+    <value type="QString">KDE_SESSION_UID=1000</value>
+    <value type="QString">KDE_SESSION_VERSION=4</value>
+    <value type="QString">LANG=ro_RO.UTF-8</value>
+    <value type="QString">LC_ALL=ro_RO.UTF-8</value>
+    <value type="QString">LESS=-R -M --shift 5</value>
+    <value type="QString">LESSOPEN=|lesspipe.sh %s</value>
+    <value type="QString">LOGNAME=cristi</value>
+    <value type="QString">MANPATH=/etc/java-config-2/current-system-vm/man:/usr/local/share/man:/usr/share/man:/usr/share/binutils-data/x86_64-pc-linux-gnu/2.20/man:/usr/share/gcc-data/x86_64-pc-linux-gnu/4.4.3/man:/etc/java-config/system-vm/man/:/usr/lib64/php5/man/:/usr/lib64/erlang/man:/opt/opera/share/man</value>
+    <value type="QString">OPENGL_PROFILE=xorg-x11</value>
+    <value type="QString">PAGER=/usr/bin/less</value>
+    <value type="QString">PATH=/usr/bin:/usr/local/bin:/usr/bin:/bin:/opt/bin:/usr/x86_64-pc-linux-gnu/gcc-bin/4.4.3</value>
+    <value type="QString">PWD=/home/cristi</value>
+    <value type="QString">QTDIR=/usr/share/qt4</value>
+    <value type="QString">QT_PLUGIN_PATH=/home/cristi/.kde4/lib64/kde4/plugins/:/usr/lib64/kde4/plugins/</value>
+    <value type="QString">RUBYOPT=-rauto_gem</value>
+    <value type="QString">R_HOME=/usr/lib64/R</value>
+    <value type="QString">SANE_CONFIG_DIR=/etc/sane.d</value>
+    <value type="QString">SCHEME_LIBRARY_PATH=/usr/share/slib/</value>
+    <value type="QString">SESSION_MANAGER=local/gentoo:@/tmp/.ICE-unix/5582,unix/gentoo:/tmp/.ICE-unix/5582</value>
+    <value type="QString">SGML_CATALOG_FILES=/etc/sgml/xml-docbook-4.5.cat:/etc/sgml/xml-docbook-4.3.cat:/etc/sgml/sgml-ent.cat:/etc/sgml/sgml-lite.cat:/etc/sgml/xml-docbook-4.4.cat:/etc/sgml/sgml-docbook.cat:/etc/sgml/openjade-1.3.2.cat:/etc/sgml/dsssl-docbook-stylesheets.cat:/etc/sgml/xml-docbook-4.2.cat:/etc/sgml/xml-docbook-4.1.2.cat:/etc/sgml/sgml-docbook-3.1.cat</value>
+    <value type="QString">SHELL=/bin/bash</value>
+    <value type="QString">SHLVL=1</value>
+    <value type="QString">STRIGI_PLUGIN_PATH=/usr/lib64/strigi:</value>
+    <value type="QString">USB_DEVFS_PATH=/dev/bus/usb</value>
+    <value type="QString">USER=cristi</value>
+    <value type="QString">VBOX_APP_HOME=/usr/lib64/virtualbox-ose</value>
+    <value type="QString">WINDOWPATH=7</value>
+    <value type="QString">XCURSOR_THEME=Oxygen_Blue</value>
+    <value type="QString">XDG_CONFIG_DIRS=/etc/xdg</value>
+    <value type="QString">XDG_DATA_DIRS=/usr/share:/usr/local/share:/usr/share</value>
+    <value type="QString">XDG_SESSION_COOKIE=7dc672075882dc13e197461647b8a719-1266744656.183215-1102214607</value>
+    <value type="QString">XDM_MANAGED=method=classic</value>
+    <value type="QString">_=/usr/lib64/kde4/libexec/start_kdeinit_wrapper</value>
    </valuelist>
    <value key="abstractProcess.IgnoreReturnValue" type="bool">false</value>
    <valuelist key="abstractProcess.arguments" type="QVariantList">
     <value type="QString">-w</value>
    </valuelist>
-   <value key="abstractProcess.command" type="QString">C:/MinGW/bin//mingw32-make.exe</value>
+   <value key="abstractProcess.command" type="QString">/usr/bin/make</value>
    <value key="abstractProcess.enabled" type="bool">true</value>
-   <value key="abstractProcess.workingDirectory" type="QString">D:/temp/parsers/parser</value>
+   <value key="abstractProcess.workingDirectory" type="QString">/home/cristi/work/parser/debug</value>
+   <valuelist key="makeargs" type="QVariantList"/>
   </valuemap>
  </data>
  <data>
@@ -195,57 +233,73 @@
   <valuemap type="QVariantMap">
    <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString">Debug</value>
    <valuelist key="abstractProcess.Environment" type="QVariantList">
-    <value type="QString">ALLUSERSPROFILE=C:\Documents and Settings\All Users</value>
-    <value type="QString">APPDATA=C:\Documents and Settings\Administrator\Application Data</value>
-    <value type="QString">CATALINA_HOME=D:\mindtomcat\tomcat</value>
-    <value type="QString">CLIENTNAME=Console</value>
-    <value type="QString">COMMONPROGRAMFILES=C:\Program Files\Common Files</value>
-    <value type="QString">COMPUTERNAME=CFALCAS</value>
-    <value type="QString">COMSPEC=C:\WINDOWS\system32\cmd.exe</value>
-    <value type="QString">FP_NO_HOST_CHECK=NO</value>
-    <value type="QString">HOMEDRIVE=C:</value>
-    <value type="QString">HOMEPATH=\Documents and Settings\Administrator</value>
-    <value type="QString">INTEL_LICENSE_FILE=C:\Program Files\Common Files\Intel\Licenses</value>
-    <value type="QString">JAVA_HOME=C:\Program Files\Java\jdk1.6.0_14</value>
-    <value type="QString">LOGONSERVER=\\CFALCAS</value>
-    <value type="QString">MIND_CLCTDISP_HOME=d:\mindcti\cdrmc</value>
-    <value type="QString">MIND_COLLECTOR_HOME=d:\mindcti\cdrmc</value>
-    <value type="QString">MIND_JAVA_HOME=C:\Java\j2re1.4.1_07</value>
-    <value type="QString">MIND_ORA_HOME=E:\oracle\product\10.2.0\db_1</value>
-    <value type="QString">MIND_PROCESSOR_HOME=d:\mindcti\cdrmc</value>
-    <value type="QString">MIND_SYSATT_HOME=c:\mindcti\sysatt</value>
-    <value type="QString">NOPAUSE=true</value>
-    <value type="QString">NUMBER_OF_PROCESSORS=2</value>
-    <value type="QString">ORACLE_SID=BILL</value>
-    <value type="QString">OS=Windows_NT</value>
-    <value type="QString">PATH=C:\Qt\2009.05\qt\bin;E:\oracle\product\10.2.0\db_1\bin;C:\Perl\site\bin;C:\Perl\bin;C:\WINDOWS\system32;c:\Perl\bin;SystemRoot%;C:\WINDOWS\system32\WBEM;C:\Java\jdk1.5.0_10\bin;C:\Program Files\Symantec\pcAnywhere\;C:\MinGW\bin\;C:\Program Files\TortoiseSVN\bin;c:\cygwin\rrd;c:\mindcti\MINDJBoss;c:\Perl\bin;E:\oracle\product\10.2.0\db_1\bin;C:\Perl\site\bin;C:\Perl\bin;C:\WINDOWS\system32;c:\Perl\bin;SystemRoot%;C:\WINDOWS\system32\WBEM;C:\Java\jdk1.5.0_10\bin;C:\Program Files\Symantec\pcAnywhere\;C:\MinGW\bin\;C:\Program Files\TortoiseSVN\bin;c:\cygwin\rrd;c:\mindcti\MINDJBoss;C:\KDE\bin\;C:\Program Files\CVSNT\;C:\Program Files\OpenVPN\bin</value>
-    <value type="QString">PATHEXT=.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH</value>
-    <value type="QString">PERL5LIB=E:\oracle\product\10.2.0\db_1\perl\5.8.3\lib\MSWin32-x86;E:\oracle\product\10.2.0\db_1\perl\5.8.3\lib;E:\oracle\product\10.2.0\db_1\perl\5.8.3\lib\MSWin32-x86;E:\oracle\product\10.2.0\db_1\perl\site\5.8.3;E:\oracle\product\10.2.0\db_1\perl\site\5.8.3\lib;E:\oracle\product\10.2.0\db_1\sysman\admin\scripts</value>
-    <value type="QString">PROCESSOR_ARCHITECTURE=x86</value>
-    <value type="QString">PROCESSOR_IDENTIFIER=x86 Family 15 Model 4 Stepping 3, GenuineIntel</value>
-    <value type="QString">PROCESSOR_LEVEL=15</value>
-    <value type="QString">PROCESSOR_REVISION=0403</value>
-    <value type="QString">PROGRAMFILES=C:\Program Files</value>
-    <value type="QString">QTDIR=C:/Qt/2009.05/qt</value>
-    <value type="QString">SESSIONNAME=Console</value>
-    <value type="QString">SYSTEMDRIVE=C:</value>
-    <value type="QString">SYSTEMROOT=C:\WINDOWS</value>
-    <value type="QString">TEMP=C:\tmp\</value>
-    <value type="QString">TMP=C:\tmp\</value>
-    <value type="QString">USERDOMAIN=CFALCAS</value>
-    <value type="QString">USERNAME=Administrator</value>
-    <value type="QString">USERPROFILE=C:\Documents and Settings\Administrator</value>
-    <value type="QString">VBOX_INSTALL_PATH=C:\Program Files\Sun\VirtualBox\</value>
-    <value type="QString">WINDIR=C:\WINDOWS</value>
+    <value type="QString">ANT_HOME=/usr/share/ant</value>
+    <value type="QString">CONFIG_PROTECT=/usr/share/X11/xkb /var/lib/hsqldb /usr/share/config</value>
+    <value type="QString">CONFIG_PROTECT_MASK=/etc/gentoo-release /etc/sandbox.d /etc/env.d/java/ /etc/php/cli-php5/ext-active/ /etc/php/cgi-php5/ext-active/ /etc/php/apache2-php5/ext-active/ /etc/fonts/fonts.conf /etc/gconf /etc/terminfo /etc/ca-certificates.conf /etc/revdep-rebuild /etc/splash</value>
+    <value type="QString">CVS_RSH=ssh</value>
+    <value type="QString">DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-Jalw1gkwhB,guid=850bd370b91852de9ec0b29e4b7fb34c</value>
+    <value type="QString">DESKTOP_SESSION=KDE-4</value>
+    <value type="QString">DISPLAY=:0.0</value>
+    <value type="QString">DM_CONTROL=/var/run/xdmctl</value>
+    <value type="QString">EDITOR=/bin/nano</value>
+    <value type="QString">GCC_SPECS=</value>
+    <value type="QString">GDK_USE_XFT=1</value>
+    <value type="QString">GS_LIB=/home/cristi/.fonts</value>
+    <value type="QString">GTK2_RC_FILES=/etc/gtk-2.0/gtkrc:/home/cristi/.gtkrc-2.0::/home/cristi/.kde4/share/config/gtkrc-2.0</value>
+    <value type="QString">GTK_RC_FILES=/etc/gtk/gtkrc:/home/cristi/.gtkrc::/home/cristi/.kde4/share/config/gtkrc</value>
+    <value type="QString">GUILE_LOAD_PATH=/usr/share/guile/1.8</value>
+    <value type="QString">HG=/usr/bin/hg</value>
+    <value type="QString">HOME=/home/cristi</value>
+    <value type="QString">INFOPATH=/usr/share/info:/usr/share/binutils-data/x86_64-pc-linux-gnu/2.20/info:/usr/share/gcc-data/x86_64-pc-linux-gnu/4.4.3/info</value>
+    <value type="QString">JAVAC=/etc/java-config-2/current-system-vm/bin/javac</value>
+    <value type="QString">JAVACC_HOME=/usr/share/javacc/</value>
+    <value type="QString">JAVA_HOME=/etc/java-config-2/current-system-vm</value>
+    <value type="QString">JDK_HOME=/etc/java-config-2/current-system-vm</value>
+    <value type="QString">KDE_FULL_SESSION=true</value>
+    <value type="QString">KDE_MULTIHEAD=false</value>
+    <value type="QString">KDE_SESSION_UID=1000</value>
+    <value type="QString">KDE_SESSION_VERSION=4</value>
+    <value type="QString">LANG=ro_RO.UTF-8</value>
+    <value type="QString">LANGUAGE=</value>
+    <value type="QString">LC_ALL=ro_RO.UTF-8</value>
+    <value type="QString">LESS=-R -M --shift 5</value>
+    <value type="QString">LESSOPEN=|lesspipe.sh %s</value>
+    <value type="QString">LOGNAME=cristi</value>
+    <value type="QString">MANPATH=/etc/java-config-2/current-system-vm/man:/usr/local/share/man:/usr/share/man:/usr/share/binutils-data/x86_64-pc-linux-gnu/2.20/man:/usr/share/gcc-data/x86_64-pc-linux-gnu/4.4.3/man:/etc/java-config/system-vm/man/:/usr/lib64/php5/man/:/usr/lib64/erlang/man:/opt/opera/share/man</value>
+    <value type="QString">OPENGL_PROFILE=xorg-x11</value>
+    <value type="QString">PAGER=/usr/bin/less</value>
+    <value type="QString">PATH=/usr/bin:/usr/local/bin:/usr/bin:/bin:/opt/bin:/usr/x86_64-pc-linux-gnu/gcc-bin/4.4.3</value>
+    <value type="QString">PWD=/home/cristi</value>
+    <value type="QString">QTDIR=/usr/share/qt4</value>
+    <value type="QString">QT_PLUGIN_PATH=/home/cristi/.kde4/lib64/kde4/plugins/:/usr/lib64/kde4/plugins/</value>
+    <value type="QString">RUBYOPT=-rauto_gem</value>
+    <value type="QString">R_HOME=/usr/lib64/R</value>
+    <value type="QString">SANE_CONFIG_DIR=/etc/sane.d</value>
+    <value type="QString">SCHEME_LIBRARY_PATH=/usr/share/slib/</value>
+    <value type="QString">SESSION_MANAGER=local/gentoo:@/tmp/.ICE-unix/4830,unix/gentoo:/tmp/.ICE-unix/4830</value>
+    <value type="QString">SGML_CATALOG_FILES=/etc/sgml/xml-docbook-4.5.cat:/etc/sgml/xml-docbook-4.3.cat:/etc/sgml/sgml-ent.cat:/etc/sgml/sgml-lite.cat:/etc/sgml/xml-docbook-4.4.cat:/etc/sgml/sgml-docbook.cat:/etc/sgml/openjade-1.3.2.cat:/etc/sgml/dsssl-docbook-stylesheets.cat:/etc/sgml/xml-docbook-4.2.cat:/etc/sgml/xml-docbook-4.1.2.cat:/etc/sgml/sgml-docbook-3.1.cat</value>
+    <value type="QString">SHELL=/bin/bash</value>
+    <value type="QString">SHLVL=1</value>
+    <value type="QString">STRIGI_PLUGIN_PATH=/usr/lib64/strigi:</value>
+    <value type="QString">USB_DEVFS_PATH=/dev/bus/usb</value>
+    <value type="QString">USER=cristi</value>
+    <value type="QString">VBOX_APP_HOME=/usr/lib64/virtualbox-ose</value>
+    <value type="QString">WINDOWPATH=7</value>
+    <value type="QString">XCURSOR_THEME=Oxygen_Black</value>
+    <value type="QString">XDG_CONFIG_DIRS=/etc/xdg</value>
+    <value type="QString">XDG_DATA_DIRS=/usr/share:/usr/local/share:/usr/share</value>
+    <value type="QString">XDG_SESSION_COOKIE=7dc672075882dc13e197461647b8a719-1266660172.700195-1510355056</value>
+    <value type="QString">XDM_MANAGED=method=classic</value>
+    <value type="QString">_=/usr/lib64/kde4/libexec/start_kdeinit_wrapper</value>
    </valuelist>
    <value key="abstractProcess.IgnoreReturnValue" type="bool">true</value>
    <valuelist key="abstractProcess.arguments" type="QVariantList">
     <value type="QString">clean</value>
     <value type="QString">-w</value>
    </valuelist>
-   <value key="abstractProcess.command" type="QString">C:/MinGW/bin//mingw32-make.exe</value>
+   <value key="abstractProcess.command" type="QString">/usr/bin/make</value>
    <value key="abstractProcess.enabled" type="bool">true</value>
-   <value key="abstractProcess.workingDirectory" type="QString">D:/temp/parsers/parser</value>
+   <value key="abstractProcess.workingDirectory" type="QString">/home/cristi/work/parser/debug</value>
    <value key="cleanConfig" type="bool">true</value>
    <valuelist key="makeargs" type="QVariantList">
     <value type="QString">clean</value>

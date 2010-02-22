@@ -1,18 +1,21 @@
 #include "parsedfstat.h"
 
-Parsedfstat::Parsedfstat(QByteArray name)
+Parsedfstat::Parsedfstat(QFileInfo name)
 {
-    statisticsfile.setFileName(name);
+    statisticsfile.setFileName(name.absoluteFilePath());
     list_header << "Filesystem" << "kbytes" << "used" \
             << "avail" << "capacity" << "Mounted" << "on";
-    init();
 }
 
 Parsedfstat::Parsedfstat()
 {
     list_header << "Filesystem" << "kbytes" << "used" \
             << "avail" << "capacity" << "Mounted" << "on";
-    init();
+}
+
+void Parsedfstat::setStatsFilename(QFileInfo name)
+{
+    statisticsfile.setFileName(name.absoluteFilePath());
 }
 
 void Parsedfstat::setTime()
@@ -29,7 +32,7 @@ int Parsedfstat::process_line()
     }
     QList<QByteArray> crtlist = line.simplified().split(' ');
     switch (blockLineNumber) {
-        case 1:{//text
+        case 0:{//text
                 if ( crtlist != list_header ) {
                     setError(2, "header is not correct.");
                 }

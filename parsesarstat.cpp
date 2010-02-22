@@ -2,19 +2,27 @@
 
 #define NUMBER_OF_HEADER_LINES 14
 #define SECONDS_IN_HOUR 3600
+#define LINE_NR_DEVICE 1
+#define LINE_NR_SZ 8
+#define LINE_NR_MEM 13
 
-Parsesarstat::Parsesarstat(QByteArray name)
+Parsesarstat::Parsesarstat(QFileInfo name)
 {
-    statisticsfile.setFileName(name);
-    init();
+    statisticsfile.setFileName(name.absoluteFilePath());
+    initdata();
 }
 
 Parsesarstat::Parsesarstat()
 {
-    init();
+    initdata();
 }
 
-void Parsesarstat::init()
+void Parsesarstat::setStatsFilename(QFileInfo name)
+{
+    statisticsfile.setFileName(name.absoluteFilePath());
+}
+
+void Parsesarstat::initdata()
 {
     list_devices = new QList<QByteArray>[NUMBER_OF_HEADER_LINES];
     int i = 0;
@@ -37,7 +45,9 @@ void Parsesarstat::init()
     list_devices[i++] << "freemem" << "freeswap";
     list_devices[i++] << "sml_mem" << "alloc" << "fail" << "lg_mem" << "alloc" << "fail" <<
             "ovsz_alloc" << "fail";
-    inheader = false;
+    foundsecondheader = false;
+    foundaheader = false;
+    headernumber = 0;
 }
 
 /*
@@ -48,29 +58,27 @@ void Parsesarstat::init()
 bool Parsesarstat::newBlock()
 {
     if ( blockNumber == 0 ) {
-        return date_regex.indexIn(line) >= 0;
+        return Parse::newBlock();
     } else {
-        bool ok1, ok2, ok3;
         QList<QByteArray> strtime = line.simplified().split(' ').at(0).split(':');
         if ( strtime.size() != 3 ) {
             return false;
         }
-        int hour = strtime.at(0).toInt(&ok1),
-            min = strtime.at(1).toInt(&ok2),
-            sec = strtime.at(2).toInt(&ok3);
-        crttime.setHMS(hour, min, sec);
-        bool ok = ok1 && ok2 && ok3 && crttime.isValid(hour, min, sec);
-        if ( ok && inheader ) {
-            inheader = false;
+        if ( foundaheader)  {
+            headernumber++;
+            foundaheader = false;
         }
-        return ok;
+        QList<double> nrs = getListDoubles(strtime);
+        crttime.setHMS(nrs.at(0), nrs.at(1), nrs.at(2));
+        return !error && crttime.isValid(nrs.at(0), nrs.at(1), nrs.at(2));
     }
 }
 
 /*
   if blocknumber is 0 we have the timestamp from line
   else if intTime is defined
-            if we are before the header it should be ~ the same time as above (+- SAMPLE_INTERVAL)
+            if we are before the header it should be ~ the same
+                time as above (+- SAMPLE_INTERVAL)
             else we add the difference between the times
        else we are in misery
 */
@@ -91,14 +99,17 @@ void Parsesarstat::setTime()
             if ( dif < 0 ) {
                 dif += SECONDS_IN_HOUR;
             }
-            if ( dif % 30 ) {
-                qDebug() << "Difference between times is" << dif << "at" << lineNumber;
+            if ( (dif % SAMPLE_INTERVAL) > SAMPLE_INTERVAL ) {
+                qDebug() << "Difference between times is" << dif <<
+                        "at line number" << lineNumber;
             }
             intTime += dif;
             prvtime = crttime;
             //lame. to keep the same block number
             blockNumber++;
-            process_line();
+            if (intTime > lasttimestamp) {
+                process_line();
+            }
             blockNumber--;
         } else {
             setError(2, "We could't get the first time.");
@@ -110,42 +121,186 @@ void Parsesarstat::setTime()
 int Parsesarstat::process_line()
 {
     error = 0;
-
     if ( line.isEmpty() ) {
         blockLineNumber--;
         return 0;
     }
+    if ( foundsecondheader ) {
+        setError(2, "We already found another header.");
+        return error;
+    }
+    if ( blockNumber <= 1 ){
+        return 0;
+    }
+
     QList<QByteArray> crtlist = line.simplified().split(' ');
-    if ( blockLineNumber == 0 && !error && blockNumber > 1 ) {
-        crtlist.removeAt(0);
-        if ( ! inheader && crtlist == list_devices[0] && header.isEmpty() ) {
-            inheader = true;
+    //if we are at the first line after the first block
+    if ( (blockLineNumber == 0) && (blockNumber > 1) ) {
+        if (crtlist.at(0).split(':').size() == 3) {
+            crtlist.removeAt(0);
+        }else {
+            setError(1, "Every new block should start with the time.");
+            return error;
         }
     }
 
-    inheader ? error = getHeaders(crtlist) : error = getValues(crtlist);
-
-    qDebug() << blockNumber << blockLineNumber << !error<< crtlist;
+    ( crtlist == list_devices[0] || foundaheader ) ?
+            error = getHeaders(crtlist) :
+                    error = getValues(crtlist);
     return error;
 }
 
 int Parsesarstat::getValues(QList<QByteArray> list)
 {
-    QList<QByteArray> crtlist = line.simplified().split(' ');
-    int size = crtlist.size();
-    if ( list_devices[0].size() == size-1 ) {
-        for ( int i=1; i < size - 1; i++ ){
-//            crtBlockValues << crtlist.at(i).toDouble(&ok);
-//            if ( !ok ) {
-//                setError(1, "value not a number:" + crtlist.at(i));
-//            }
+    error = 0;
+    bool ok;
+    QList<double> nrs;
+    if ( !headernumber && (blockNumber > 1) ){
+        setError(1, "We got values without knowing the header.");
+        return error;
+    }
+
+    if ( blockLineNumber == 0) {
+        if ( list.size() == list_devices[0].size() ){
+            crtBlockValues << getListDoubles(list);
+        } else {
+            setError(1, "Wrong values.");
         }
     } else {
-        setError(1, "size of values different then size of devices.");
+        list.at(0).toDouble(&ok);
+        if ( !ok && headernumber ) {
+            //check lines that don't start with a number
+            nrs = getListDoubles(list.at(0).simplified().split('/'), false);
+            if ( error || ( nrs.size() != 2 ) ){
+                //disks
+                if ( list.size() == list_devices[1].size() ) {
+                    header << list.at(0);
+                    list.removeAt(0);
+                    crtBlockValues << getListDoubles(list);
+                } else {
+                    setError(1, "Number of devices does not match the header:");
+                    qDebug() << list_devices[1] << list;
+                }
+            }else {
+                getSZ(list);
+            }
+        } else {
+            if ( list.size() == list_devices[blockLineNumber-header.size()+1].size() ){
+                crtBlockValues << getListDoubles(list);
+            }else {
+                setError(1, "Number of devices does not match the header:");
+                qDebug() << list_devices[blockLineNumber - header.size() + 1] << list;
+            }
+        }
     }
+    return error;
 }
 
 int Parsesarstat::getHeaders(QList<QByteArray> list)
 {
-    return list_devices[blockLineNumber] == list;
+//    qDebug() << "In header.";
+    foundaheader = true;
+    if ( headernumber ) {
+        foundsecondheader = true;
+        setError(2, "We think we found a second header. Not good.");
+        return error;
+    }
+    if ( (blockLineNumber <= NUMBER_OF_HEADER_LINES) &&
+         list_devices[blockLineNumber] == list ){
+        if ( blockLineNumber == NUMBER_OF_HEADER_LINES ){
+            foundaheader = false;
+        }
+        return 0;
+    } else {
+        foundsecondheader = true;
+        setError(2, "Problems with the header");
+        return error;
+    }
+}
+
+QList<double> Parsesarstat::getListDoubles(QList<QByteArray> list, bool set)
+{
+    error = 0;
+    QList<double> listint;
+    bool ok;
+
+    for (int i=0; i< list.size(); i++){
+        int nr = list.at(i).toDouble(&ok);
+        if ( !ok && set ) {
+            setError(1, "One of the fields is not a number:" + list.at(i));
+            listint.clear();
+            break;
+        }
+        listint << nr;
+    }
+    return listint;
+}
+
+void Parsesarstat::getSZ(QList<QByteArray> list)
+{
+    QList<double> nrs;
+    bool ok;
+    if ( list.size() == list_devices[blockLineNumber - header.size() + 1].size() ){
+//        crtBlockValues << nrs;
+        for (int i = 0; i < list.size(); i++) {
+            if (list.at(i).contains('/')) {
+                nrs = getListDoubles(list.at(i).split('/'));
+                if (!error){
+                    if ( nrs.at(0) && nrs.at(1)){
+                        crtBlockValues << nrs.at(0)/nrs.at(1)*100;
+                    } else {
+                        crtBlockValues << 0;
+                    }
+                }
+             } else {
+                 double nr = list.at(i).toDouble(&ok);
+                 if (ok){
+                     crtBlockValues << nr;
+                 }
+             }
+         }
+    }else {
+        setError(1, "Number of devices does not match the header:");
+        qDebug() << list_devices[blockLineNumber - header.size() + 1] << list;
+    }
+}
+
+void Parsesarstat::buildHeaders()
+{
+    QList<QByteArray> prvheader = header;
+    header.clear();
+    //the big header
+    for (int i=0;i<NUMBER_OF_HEADER_LINES;i++){
+        switch (i){
+        case LINE_NR_DEVICE:{
+                //the devices from the file
+                for (int j=0;j<prvheader.size();j++) {
+                    //the little header for devices
+                    for (int k=1;k<list_devices[i].size();k++){
+                        header << list_devices[i][0]+"_"+prvheader[j]+"_"+list_devices[i][k];
+                    }
+                }
+            }
+            break;
+        case LINE_NR_SZ:{
+                for (int k=0; k < list_devices[i].size() - 1; k+=2){
+                    header << list_devices[i][k] << list_devices[i][k]+"_"+list_devices[i][k+1];
+                }
+                header << list_devices[i][list_devices[i].size()-1];
+            }
+            break;
+        case LINE_NR_MEM:{
+                for (int k=0; k < list_devices[i].size() - 2; k+=3){
+                    header << list_devices[i][k] << list_devices[i][k]+"_"+list_devices[i][k+1]
+                             << list_devices[i][k]+"_"+list_devices[i][k+2];
+                }
+                header << list_devices[i][list_devices[i].size()-2]
+                        << list_devices[i][list_devices[i].size()-2]+"_"+list_devices[i][list_devices[i].size()-1];
+            }
+            break;
+        default:{
+                header << list_devices[i];
+            }
+        }
+    }
 }

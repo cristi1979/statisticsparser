@@ -6,11 +6,17 @@ Parse::Parse()
     qDebug() << "main empty";
 }
 
-Parse::Parse(QByteArray name)
+Parse::Parse(QFileInfo name)
 {
     init();
-    statisticsfile.setFileName(name);
+    statisticsfile.setFileName(name.absoluteFilePath());
     qDebug() << "main name";
+}
+
+Parse::~Parse()
+{
+    delete rrd;
+
 }
 
 void Parse::setStatsFilename(QFileInfo name)
@@ -30,7 +36,6 @@ void Parse::init()
     blockNumber = 0;
     intTime = 0;
     error = 0;
-    sampleinterval = SAMPLE_INTERVAL;
     dstype = yGAUGE;
     rrd = new RRDTool;
 }
@@ -62,7 +67,7 @@ void Parse::timeFromLine()
 
 void Parse::timeIncrement()
 {
-    intTime += sampleinterval;
+    intTime += SAMPLE_INTERVAL;
 }
 
 void Parse::printMap()
@@ -82,7 +87,9 @@ bool Parse::newBlock()
 
 int Parse::run()
 {
-    qWarning() << QTime::currentTime();
+    QTime runtime;
+    runtime.start();
+    qWarning() << runtime.currentTime();
 
     if (!statisticsfile.open(QIODevice::ReadOnly | QIODevice::Text)) {
         qCritical() << statisticsfile.errorString() << " : "
@@ -98,17 +105,13 @@ int Parse::run()
         lineNumber++;
         if ( newBlock() ) {
             //new date: insert previous data, clear all
-            if ( !prev_header.isEmpty() && prev_header != header ) {
+            if ( !prev_header.isEmpty() && (prev_header != header) ) {
                 setError(2, "Header error. We don't know which one is correct. Bail out.");
                 qCritical() << "previous header" << prev_header;
                 qCritical() << "current header" << header;
                 return error;
             }
-            if ( ( !crtBlockValues.isEmpty() && intTime > 0 && !error &&
-                   //we don't need "or" below, because values.begin could be empty
-                   !( !ds.values.isEmpty()  &&
-                      (ds.values.begin().value().size() != crtBlockValues.size()) )
-                ) ) {
+            if ( isValidData() ) {
                 ds.values.insert(intTime, crtBlockValues);
             } else {
                 if ( !crtBlockValues.isEmpty() ) {
@@ -130,43 +133,61 @@ int Parse::run()
             }
         }
     }
-
-    if ( !crtBlockValues.isEmpty() && !error ) {
-        ds.values.insert(intTime, crtBlockValues);
-    }
-
-    sendToRRD();
     statisticsfile.close();
 
-    qWarning() << QTime::currentTime();
+    if ( isValidData() ) {
+        ds.values.insert(intTime, crtBlockValues);
+    }
+    buildHeaders();
+    qWarning() << "Elapsed time in parser:" << runtime.elapsed();
+    runtime.restart();
+    if ( ds.values.isEmpty()) {
+        qDebug() << "Nothing to send to rrd";
+        return error;
+    }
+
+    if ( header.size() == ds.values.begin().value().size() ) {
+        sendToRRD();
+        qWarning() << "Elapsed time in rrd:" << runtime.elapsed();
+    } else {
+        setError(1, "Headers not the same size as values.");
+        qCritical() << "\t" << header.size() << ds.values.begin().value().size() << header << ds.values.begin().value();
+    }
+
     return error;
+}
+
+bool Parse::isValidData()
+{
+    return ( !crtBlockValues.isEmpty() && (intTime > 0) && !error &&
+             //we don't need "or" below, because values.begin could be empty
+             !( !ds.values.isEmpty()  &&
+                (ds.values.begin().value().size() != crtBlockValues.size())
+                ) );
 }
 
 void Parse::setDatasourceInfo()
 {
     int size = ds.values.begin().value().size();
-    for (int i = 0; i < size; ++i) {
+    for (int i = 0; i < size; i++) {
         ds.datasourcesMax << "U";
         ds.datasourcesMin << "U";
         ds.datasourcesName << QString::number(qChecksum(header.at(i), header.at(i).size()));
+        qDebug() << header.at(i)<<QString::number(qChecksum(header.at(i), header.at(i).size()));
         ds.datasourcesType << stringDSType[yGAUGE];
      }
 }
 
 void Parse::sendToRRD()
 {
-    if ( ds.values.isEmpty()) {
-        qDebug() << "Nothing to send to rrd";
-        return;
-    }
     setDatasourceInfo();
 
     int size = ds.values.begin().value().size();
-    if (ds.datasourcesMax.size() == size ||
-            ds.datasourcesMin.size() == size ||
-            ds.datasourcesName.size() == size ||
-            ds.datasourcesType.size() == size) {
-        rrd->setData(sampleinterval,
+    if ( (ds.datasourcesMax.size() == size) ||
+            (ds.datasourcesMin.size() == size) ||
+            (ds.datasourcesName.size() == size) ||
+            (ds.datasourcesType.size() == size) ) {
+        rrd->setData(SAMPLE_INTERVAL,
                     ds.datasourcesType,
                     ds.datasourcesName,
                     ds.datasourcesMin,
@@ -175,9 +196,13 @@ void Parse::sendToRRD()
         rrd->create();
         qDebug() << rrd->getError() << rrd->getOutput();
         if ( rrd->getError().isEmpty() || (rrd->getError() == rrd->getExpectedError()) ) {
-//            rrd->update();
+            rrd->update();
         }
     } else {
         setError(1, "Error sending data to rrd.");
     }
+}
+
+void Parse::buildHeaders()
+{
 }

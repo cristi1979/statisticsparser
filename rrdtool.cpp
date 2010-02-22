@@ -1,7 +1,11 @@
 #include "rrdtool.h"
 
 #define NUMBER_OF_RRAS 1
+#if defined (Q_OS_WIN32)
 const QString stringProgramRRD = QDir::currentPath() + "/rrd/rrdtool.exe";
+#else
+const QString stringProgramRRD = "rrdtool";
+#endif
 
 
 /*
@@ -319,7 +323,7 @@ void RRDTool::update()
         return;
     }
 
-    int maxcmdlength;
+    unsigned int maxcmdlength;
 #if defined (Q_OS_WIN32)
     maxcmdlength = 8191;
     here = "update in stupid windows limit";

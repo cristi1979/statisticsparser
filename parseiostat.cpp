@@ -1,9 +1,9 @@
 #include "parseiostat.h"
 using namespace std;
 
-Parseiostat::Parseiostat(QByteArray name)
+Parseiostat::Parseiostat(QFileInfo name)
 {
-    statisticsfile.setFileName(name);
+    statisticsfile.setFileName(name.absoluteFilePath());
     list_cpu << "us" << "sy" << "wt" << "id";
     list_disk << "r/s" << "w/s" << "kr/s" << "kw/s" << "wait" \
             << "actv" << "wsvc_t" << "asvc_t" << "%w" << "%b" << "device";
@@ -16,6 +16,11 @@ Parseiostat::Parseiostat()
     list_disk << "r/s" << "w/s" << "kr/s" << "kw/s" << "wait" \
             << "actv" << "wsvc_t" << "asvc_t" << "%w" << "%b" << "device";
     qDebug() << "iostat empty";
+}
+
+void Parseiostat::setStatsFilename(QFileInfo name)
+{
+    statisticsfile.setFileName(name.absoluteFilePath());
 }
 
 void Parseiostat::setTime()
@@ -31,7 +36,7 @@ int Parseiostat::process_line()
         return 0;
     }
     switch (blockLineNumber) {
-        case 1:{//cpu header
+        case 0:{//cpu header
                 if (line == "cpu") {
                     devices = line.split(',');
                 } else {
@@ -39,7 +44,7 @@ int Parseiostat::process_line()
                 }
             }
         break;
-        case 2:{//cpu header
+        case 1:{//cpu header
                 QList<QByteArray> crtlist = line.split(',');
                 if (list_cpu == crtlist) {
                     for ( int i=0; i < crtlist.size(); ++i ){
@@ -50,7 +55,7 @@ int Parseiostat::process_line()
                 }
             }
         break;
-        case 3:{//cpu values
+        case 2:{//cpu values
                 bool ok;
                 foreach (QString str, line.split(',')){
                     crtBlockValues << str.toDouble(&ok);
@@ -60,13 +65,13 @@ int Parseiostat::process_line()
                 }
             }
         break;
-        case 4: {//extra header
+        case 3: {//extra header
                 if (line != "extended device statistics") {
                     setError(1, "extended device statistics missing.");
                 }
             }
         break;
-        case 5:{//devices header
+        case 4:{//devices header
                 devices = line.split(',');
                 if ( list_disk != devices ){
                     setError(1);
@@ -87,6 +92,7 @@ int Parseiostat::process_line()
                     }
                 } else {
                     setError(1, "size of values different then size of devices.");
+                    qDebug() << devices << crtlist;
                 }
             }
         break;

@@ -23,28 +23,25 @@ const QString stringDSType[] = {
 class Parse
 {
 public:
-    Parse(QByteArray name);
+    Parse(QFileInfo name);
     Parse();
+    ~Parse();
     int run();
     void setStatsFilename(QFileInfo name);
     void setRRDFileName(QFileInfo name);
 
 protected:
+    quint64 lineNumber, blockNumber, intTime, error, blockLineNumber, lasttimestamp;
     QFile statisticsfile;
     QByteArray block, line;
-    QRegExp date_regex;
+    QList<QByteArray> header;
+    QList<double> crtBlockValues;
 
     struct datasource {
         QStringList datasourcesType, datasourcesName;
         QStringList datasourcesMin, datasourcesMax;
         QMap<quint64, QList<double> > values;
     } ds;
-    QList<QByteArray> header;
-
-    QList<double> crtBlockValues;
-    quint64 lineNumber, blockNumber, intTime, error, blockLineNumber,
-        sampleinterval, lasttimestamp;
-
     enum typeDSType {
         yGAUGE,
         yCOUNTER,
@@ -53,19 +50,22 @@ protected:
         yDSTYPELAST
     } dstype;
 
-    RRDTool *rrd;
-
     void setError(int, QByteArray = "");
-    void clear();
     void timeIncrement();
     void timeFromLine();
     void printMap();
-    void sendToRRD();
-    virtual void init();
+    virtual void setDatasourceInfo();
     virtual void setTime();
     virtual int process_line() = 0;
-    virtual void setDatasourceInfo();
     virtual bool newBlock();
+    virtual void buildHeaders();
+private:
+    RRDTool *rrd;
+    QRegExp date_regex;
+    void sendToRRD();
+    void clear();
+    void init();
+    bool isValidData();
 };
 
 #endif // PARSE_H
