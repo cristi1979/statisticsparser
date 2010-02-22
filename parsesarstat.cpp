@@ -221,19 +221,20 @@ int Parsesarstat::getHeaders(QList<QByteArray> list)
 QList<double> Parsesarstat::getListDoubles(QList<QByteArray> list, bool set)
 {
     error = 0;
-    QList<double> listint;
+    QList<double> listtmp;
     bool ok;
 
     for (int i=0; i< list.size(); i++){
-        int nr = list.at(i).toDouble(&ok);
+        double nr = list.at(i).toDouble(&ok);
+        qDebug() <<list.at(i)<<nr<<line;
         if ( !ok && set ) {
             setError(1, "One of the fields is not a number:" + list.at(i));
-            listint.clear();
+            listtmp.clear();
             break;
         }
-        listint << nr;
+        listtmp << nr;
     }
-    return listint;
+    return listtmp;
 }
 
 void Parsesarstat::getSZ(QList<QByteArray> list)
