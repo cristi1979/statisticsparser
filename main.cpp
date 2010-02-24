@@ -115,8 +115,6 @@ void parse_arguments(int argc, char *argv[])
             printf ("%s \n", argv[optind++]);
         putchar ('\n');
     }
-
-    exit (0);
 }
 
 int main(int argc, char *argv[])
@@ -134,19 +132,21 @@ int main(int argc, char *argv[])
     file.setFile("d:\\temp\\parsers\\aus1-mind_fanstat_1.log");
 #else
     file.setFile("/home/cristi/work/parser/logs/aus1-mind_sarstat_1.log");
-    //    file.setFile("/home/cristi/work/parser/logs/aus1-mind_fanstat_1.log");
-    //    file.setFile("/home/cristi/work/parser/logs/aus1-mind_dfstat_1.log");
+    file.setFile("/home/cristi/work/parser/logs/aus1-mind_fanstat_1.log");
+//    file.setFile("/home/cristi/work/parser/logs/aus1-mind_dfstat_1.log");
     //    file.setFile("/home/cristi/work/parser/logs/aus1-mind_iostat_1.log");
 #endif
+    QList<QFileInfo> fileslist;
+    fileslist << file;
     rrd.setFile("coco.rrd");
     //    Parseiostat q;
-    //    Parsedfstat q;
-    Parsesarstat q;
-    //    Parsefanstat q;
-    q.setStatsFilename(file);
+//    Parsedfstat q;
+//    Parsesarstat q;
+    Parsefanstat q;
+    q.setStatsFilename(fileslist);
     q.setRRDFileName(rrd);
     q.run();
     qDebug() << "FIN.";
-    exit (10);
-    return a.exec();
+
+//    return app.exec();
 }

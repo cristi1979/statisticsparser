@@ -6,9 +6,8 @@
 class Parsesarstat : public Parse
 {
 public:
-    Parsesarstat(QFileInfo name);
+    Parsesarstat(QList<QFileInfo> name);
     Parsesarstat();
-    void setStatsFilename(QFileInfo name);
 
 private:
     QList<QByteArray> *list_devices;

@@ -1,8 +1,8 @@
 #include "parsedfstat.h"
 
-Parsedfstat::Parsedfstat(QFileInfo name)
+Parsedfstat::Parsedfstat(QList<QFileInfo> name)
 {
-    statisticsfile.setFileName(name.absoluteFilePath());
+    statisticsfiles = name;
     list_header << "Filesystem" << "kbytes" << "used" \
             << "avail" << "capacity" << "Mounted" << "on";
 }
@@ -11,11 +11,6 @@ Parsedfstat::Parsedfstat()
 {
     list_header << "Filesystem" << "kbytes" << "used" \
             << "avail" << "capacity" << "Mounted" << "on";
-}
-
-void Parsedfstat::setStatsFilename(QFileInfo name)
-{
-    statisticsfile.setFileName(name.absoluteFilePath());
 }
 
 void Parsedfstat::setTime()
@@ -67,13 +62,6 @@ int Parsedfstat::process_line()
         break;
     }
 
-    return error;
-}
-
-int Parsedfstat::run()
-{
-    Parse::run();
-//    printMap();
     return error;
 }
 

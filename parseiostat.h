@@ -6,10 +6,8 @@
 class Parseiostat : public Parse
 {
 public:
-    Parseiostat(QFileInfo name);
+    Parseiostat(QList<QFileInfo> name);
     Parseiostat();
-    void setStatsFilename(QFileInfo name);
-    int run();
 
 private:
     QList <QByteArray> list_cpu, list_disk, devices;

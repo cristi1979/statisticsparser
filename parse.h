@@ -23,16 +23,16 @@ const QString stringDSType[] = {
 class Parse
 {
 public:
-    Parse(QFileInfo name);
+    Parse(QList<QFileInfo> name);
     Parse();
     ~Parse();
     int run();
-    void setStatsFilename(QFileInfo name);
+    void setStatsFilename(QList<QFileInfo> name);
     void setRRDFileName(QFileInfo name);
 
 protected:
     quint64 lineNumber, blockNumber, intTime, error, blockLineNumber, lasttimestamp;
-    QFile statisticsfile;
+    QList<QFileInfo> statisticsfiles;
     QByteArray block, line;
     QList<QByteArray> header;
     QList<double> crtBlockValues;

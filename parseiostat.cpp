@@ -1,13 +1,12 @@
 #include "parseiostat.h"
 using namespace std;
 
-Parseiostat::Parseiostat(QFileInfo name)
+Parseiostat::Parseiostat(QList<QFileInfo> name)
 {
-    statisticsfile.setFileName(name.absoluteFilePath());
+    statisticsfiles = name;
     list_cpu << "us" << "sy" << "wt" << "id";
     list_disk << "r/s" << "w/s" << "kr/s" << "kw/s" << "wait" \
             << "actv" << "wsvc_t" << "asvc_t" << "%w" << "%b" << "device";
-    qDebug() << "iostat name";
 }
 
 Parseiostat::Parseiostat()
@@ -15,12 +14,6 @@ Parseiostat::Parseiostat()
     list_cpu << "us" << "sy" << "wt" << "id";
     list_disk << "r/s" << "w/s" << "kr/s" << "kw/s" << "wait" \
             << "actv" << "wsvc_t" << "asvc_t" << "%w" << "%b" << "device";
-    qDebug() << "iostat empty";
-}
-
-void Parseiostat::setStatsFilename(QFileInfo name)
-{
-    statisticsfile.setFileName(name.absoluteFilePath());
 }
 
 void Parseiostat::setTime()
@@ -92,17 +85,10 @@ int Parseiostat::process_line()
                     }
                 } else {
                     setError(1, "size of values different then size of devices.");
-                    qDebug() << devices << crtlist;
+                    qCritical() << devices << crtlist;
                 }
             }
         break;
     }
-    return error;
-}
-
-int Parseiostat::run()
-{
-    Parse::run();
-//    printMap();
     return error;
 }

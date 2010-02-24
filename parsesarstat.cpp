@@ -5,21 +5,17 @@
 #define LINE_NR_DEVICE 1
 #define LINE_NR_SZ 8
 #define LINE_NR_MEM 13
+#define DISK_PREFIX "disk_"
 
-Parsesarstat::Parsesarstat(QFileInfo name)
+Parsesarstat::Parsesarstat(QList<QFileInfo> name)
 {
-    statisticsfile.setFileName(name.absoluteFilePath());
+    statisticsfiles = name;
     initdata();
 }
 
 Parsesarstat::Parsesarstat()
 {
     initdata();
-}
-
-void Parsesarstat::setStatsFilename(QFileInfo name)
-{
-    statisticsfile.setFileName(name.absoluteFilePath());
 }
 
 void Parsesarstat::initdata()
@@ -100,7 +96,7 @@ void Parsesarstat::setTime()
                 dif += SECONDS_IN_HOUR;
             }
             if ( (dif % SAMPLE_INTERVAL) > SAMPLE_INTERVAL ) {
-                qDebug() << "Difference between times is" << dif <<
+                qWarning() << "Difference between times is" << dif <<
                         "at line number" << lineNumber;
             }
             intTime += dif;
@@ -174,7 +170,7 @@ int Parsesarstat::getValues(QList<QByteArray> list)
             if ( error || ( nrs.size() != 2 ) ){
                 //disks
                 if ( list.size() == list_devices[1].size() ) {
-                    header << list.at(0);
+                    header << DISK_PREFIX + list.at(0);
                     list.removeAt(0);
                     crtBlockValues << getListDoubles(list);
                 } else {
@@ -189,7 +185,7 @@ int Parsesarstat::getValues(QList<QByteArray> list)
                 crtBlockValues << getListDoubles(list);
             }else {
                 setError(1, "Number of devices does not match the header:");
-                qDebug() << list_devices[blockLineNumber - header.size() + 1] << list;
+                qCritical() << list_devices[blockLineNumber - header.size() + 1] << list;
             }
         }
     }
@@ -198,7 +194,6 @@ int Parsesarstat::getValues(QList<QByteArray> list)
 
 int Parsesarstat::getHeaders(QList<QByteArray> list)
 {
-//    qDebug() << "In header.";
     foundaheader = true;
     if ( headernumber ) {
         foundsecondheader = true;
@@ -226,7 +221,6 @@ QList<double> Parsesarstat::getListDoubles(QList<QByteArray> list, bool set)
 
     for (int i=0; i< list.size(); i++){
         double nr = list.at(i).toDouble(&ok);
-        qDebug() <<list.at(i)<<nr<<line;
         if ( !ok && set ) {
             setError(1, "One of the fields is not a number:" + list.at(i));
             listtmp.clear();
@@ -262,7 +256,7 @@ void Parsesarstat::getSZ(QList<QByteArray> list)
          }
     }else {
         setError(1, "Number of devices does not match the header:");
-        qDebug() << list_devices[blockLineNumber - header.size() + 1] << list;
+        qCritical() << list_devices[blockLineNumber - header.size() + 1] << list;
     }
 }
 

@@ -6,10 +6,8 @@
 class Parsedfstat : public Parse
 {
 public:
-    Parsedfstat(QFileInfo name);
+    Parsedfstat(QList<QFileInfo> name);
     Parsedfstat();
-    void setStatsFilename(QFileInfo name);
-    int run();
 
 private:
     QList <QByteArray> list_header;
