@@ -33,8 +33,8 @@ public:
 protected:
     quint64 lineNumber, blockNumber, intTime, error, blockLineNumber, lasttimestamp;
     QList<QFileInfo> statisticsfiles;
-    QByteArray block, line;
-    QList<QByteArray> header;
+    QString block, line;
+    QList<QString> header;
     QList<double> crtBlockValues;
 
     struct datasource {
@@ -50,7 +50,7 @@ protected:
         yDSTYPELAST
     } dstype;
 
-    void setError(int, QByteArray = "");
+    void setError(int, QString = "");
     void timeIncrement();
     void timeFromLine();
     void printMap();
@@ -59,6 +59,7 @@ protected:
     virtual int process_line() = 0;
     virtual bool newBlock();
     virtual void buildHeaders();
+    virtual void insertLastValues();
 private:
     RRDTool *rrd;
     QRegExp date_regex;

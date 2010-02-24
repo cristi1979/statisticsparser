@@ -43,7 +43,7 @@ void Parse::setTime()
     timeFromLine();
 }
 
-void Parse::setError(int nr, QByteArray string)
+void Parse::setError(int nr, QString string)
 {
     error = nr;
     qCritical() << "Problem at line number" << QString::number(lineNumber) << ":" << string;
@@ -101,7 +101,7 @@ int Parse::run()
         clear();
         lasttimestamp = rrd->last().toInt();
 
-        QList<QByteArray> prev_header;
+        QList<QString> prev_header;
         while ( !file.atEnd() ) {
             line = file.readLine().trimmed();
             lineNumber++;
@@ -138,6 +138,7 @@ int Parse::run()
         file.close();
     }
 
+    insertLastValues();
     if ( isValidData() ) {
         ds.values.insert(intTime, crtBlockValues);
     }
@@ -154,7 +155,7 @@ int Parse::run()
         qWarning() << "Elapsed time in rrd:" << runtime.elapsed();
     } else {
         setError(1, "Headers not the same size as values.");
-        qCritical() << "\t" << header.size() << ds.values.begin().value().size() << header << ds.values.begin().value();
+        qCritical() << header.size() << ds.values.begin().value().size() << header << ds.values.begin().value();
     }
 
     return error;
@@ -175,7 +176,7 @@ void Parse::setDatasourceInfo()
     for (int i = 0; i < size; i++) {
         ds.datasourcesMax << "U";
         ds.datasourcesMin << "U";
-        ds.datasourcesName << QString::number(qChecksum(header.at(i), header.at(i).size()));
+        ds.datasourcesName << QString::number(qChecksum(header.at(i).toAscii(), header.at(i).size()));
         ds.datasourcesType << stringDSType[yGAUGE];
      }
 }
@@ -198,6 +199,7 @@ void Parse::sendToRRD()
         rrd->create();
         if ( rrd->getError().isEmpty() || (rrd->getError() == rrd->getExpectedError()) ) {
             rrd->update();
+//            rrd->dump();
         } else {
             qWarning() << "rrd error:" << rrd->getError();
         }
@@ -207,5 +209,9 @@ void Parse::sendToRRD()
 }
 
 void Parse::buildHeaders()
+{
+}
+
+void Parse::insertLastValues()
 {
 }

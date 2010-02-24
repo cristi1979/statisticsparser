@@ -11,11 +11,11 @@ public:
     Parseprtpicl(QList<QFileInfo> name);
     Parseprtpicl();
 protected:
-    QByteArray *list_devices;
+    QString *list_devices;
     QList<unsigned int> values_positions, headers_positions;
-    QMap< QByteArray, double> mapsubblockvals;
-    QMap<QByteArray, QMap< QByteArray, double> > mapblockvals;
-    QList<QByteArray> subheader;
+    QMap< QString, double> mapsubblockvals;
+    QMap<QString, QMap< QString, double> > mapblockvals;
+    QStringList subheader;
     QRegExp regexp;
     quint64 max_nr_of_subblock_lines;
     int process_line();
@@ -24,6 +24,8 @@ protected:
     void setTime();
     void setDatasourceInfo();
     bool matchLine(unsigned int);
+    void insertValues();
+    void insertLastValues();
     virtual void initdata() = 0;
 };
 

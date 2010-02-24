@@ -10,7 +10,7 @@ public:
     Parseiostat();
 
 private:
-    QList <QByteArray> list_cpu, list_disk, devices;
+    QList <QString> list_cpu, list_disk, devices;
     int process_line();
     void setTime();
 };

@@ -25,7 +25,7 @@ int Parsedfstat::process_line()
         blockLineNumber--;
         return 0;
     }
-    QList<QByteArray> crtlist = line.simplified().split(' ');
+    QList<QString> crtlist = line.simplified().split(' ');
     switch (blockLineNumber) {
         case 0:{//text
                 if ( crtlist != list_header ) {
@@ -39,7 +39,7 @@ int Parsedfstat::process_line()
                     double used = crtlist.at(list_header.indexOf("used")).toDouble(&ok1);
                     double total = crtlist.at(list_header.indexOf("kbytes")).toDouble(&ok2);
                     double avail = crtlist.at(list_header.indexOf("avail")).toDouble(&ok3);
-                    QByteArray tmp = crtlist.at(list_header.indexOf("capacity"));
+                    QString tmp = crtlist.at(list_header.indexOf("capacity"));
                     double capacity = tmp.remove(tmp.length()-1,1).toDouble(&ok4);
                     if ( ok1 && ok2 && ok3 && ok4 ) {
                         double val1 = (double)used * 100 / ((double)avail + (double)used) + 0.5;
@@ -70,7 +70,7 @@ void Parsedfstat::setDatasourceInfo()
     for (int i = 0; i < ds.values.begin().value().size(); ++i) {
         ds.datasourcesMax << QString::number(100);
         ds.datasourcesMin << QString::number(0);
-        ds.datasourcesName << QString::number(qChecksum(header.at(i), header.at(i).size()));
+        ds.datasourcesName << QString::number(qChecksum(header.at(i).toAscii(), header.at(i).size()));
         ds.datasourcesType << stringDSType[yGAUGE];
      }
 }

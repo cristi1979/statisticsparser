@@ -38,7 +38,7 @@ int Parseiostat::process_line()
             }
         break;
         case 1:{//cpu header
-                QList<QByteArray> crtlist = line.split(',');
+                QList<QString> crtlist = line.split(',');
                 if (list_cpu == crtlist) {
                     for ( int i=0; i < crtlist.size(); ++i ){
                         header << devices[0] + "_" + crtlist.at(i);
@@ -72,7 +72,7 @@ int Parseiostat::process_line()
             }
         break;
         default:{//devices values
-                QList<QByteArray> crtlist = line.split(',');
+                QList<QString> crtlist = line.split(',');
                 int size = crtlist.size();
                 if ( devices.size() == size ) {
                     bool ok;

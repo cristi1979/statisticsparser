@@ -20,7 +20,7 @@ Parsefanstat::Parsefanstat()
 void Parsefanstat::initdata()
 {
     max_nr_of_subblock_lines = MAX_NUMBER_OF_SUBBLOCK_LINES;
-    list_devices = new QByteArray[max_nr_of_subblock_lines];
+    list_devices = new QString[max_nr_of_subblock_lines];
     int i = 0;
     list_devices[i++] = "^(.+)\\s+\\(fan,\\s+(\\d.+)\\)$";
     list_devices[i++] = "^:(_fru_parent)\\s+\\((.+)\\)$";

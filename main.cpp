@@ -43,7 +43,7 @@ void myMessageOutput(QtMsgType type, const char* msg)
     file.close();
 }
 
-void print_usage (QByteArray program_name)
+void print_usage (QString program_name)
 {
     qDebug() << "Usage:" << program_name << "options [ inputfiles ... ]";
     qDebug() <<
@@ -57,7 +57,7 @@ void print_usage (QByteArray program_name)
 void parse_arguments(int argc, char *argv[])
 {
     int c;
-    QByteArray program_name = argv[0];
+    QString program_name = argv[0];
 
     while (1)
     {
