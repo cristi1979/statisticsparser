@@ -11,7 +11,6 @@ public:
     Parsefanstat();
 private:
     void initdata();
-    bool newBlock();
 };
 
 #endif // PARSEFANSTAT_H

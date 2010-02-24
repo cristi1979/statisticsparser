@@ -47,6 +47,7 @@ void Parse::setError(int nr, QByteArray string)
 {
     error = nr;
     qCritical() << "Problem at line number" << QString::number(lineNumber) << ":" << string;
+    qCritical() << line;
 }
 
 void Parse::clear()
