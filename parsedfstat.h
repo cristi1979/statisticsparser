@@ -10,7 +10,7 @@ public:
     Parsedfstat();
 
 private:
-    QList <QString> list_header;
+    QStringList list_header;
     int process_line();
     void setTime();
     void setDatasourceInfo();

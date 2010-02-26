@@ -13,11 +13,13 @@ SOURCES += main.cpp \
     parsedfstat.cpp \
     parsefanstat.cpp \
     parseprtpicl.cpp \
-    parsesarstat.cpp
+    parsesarstat.cpp \
+    parsempstat.cpp
 HEADERS += rrdtool.h \
     parse.h \
     parseiostat.h \
     parsedfstat.h \
     parsefanstat.h \
     parseprtpicl.h \
-    parsesarstat.h
+    parsesarstat.h \
+    parsempstat.h

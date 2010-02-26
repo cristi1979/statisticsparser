@@ -3,6 +3,7 @@
 
 #include "parse.h"
 
+//http://docs.sun.com/app/docs/doc/819-2582/addgt?l=en&q=mpstat&a=view
 class Parseiostat : public Parse
 {
 public:
@@ -10,7 +11,7 @@ public:
     Parseiostat();
 
 private:
-    QList <QString> list_cpu, list_disk, devices;
+    QStringList list_cpu, list_disk, devices;
     int process_line();
     void setTime();
 };

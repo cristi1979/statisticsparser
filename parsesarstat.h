@@ -10,7 +10,7 @@ public:
     Parsesarstat();
 
 private:
-    QList<QString> *list_devices;
+    QStringList *list_devices;
     QDateTime firsttime;
     bool foundsecondheader, foundaheader;
     int headernumber;
@@ -19,11 +19,11 @@ private:
     void initdata();
     bool newBlock();
     void setTime();
-    void getSZ(QList<QString>);
-    int getValues(QList<QString> list);
-    int getHeaders(QList<QString> list);
-    void buildHeaders();
-    QList<double> getListDoubles(QList<QString>, bool set = true);
+    void getSZ(QStringList);
+    int getValues(QStringList list);
+    int getHeaders(QStringList list);
+    void insertLastValues();
+    QList<double> getListDoubles(QStringList, bool set = true);
 };
 
 #endif // PARSESARSTAT_H

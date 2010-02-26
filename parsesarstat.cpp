@@ -20,7 +20,7 @@ Parsesarstat::Parsesarstat()
 
 void Parsesarstat::initdata()
 {
-    list_devices = new QList<QString>[NUMBER_OF_HEADER_LINES];
+    list_devices = new QStringList[NUMBER_OF_HEADER_LINES];
     int i = 0;
     list_devices[i++] << "%usr" << "%sys" << "%wio" << "%idle";
     list_devices[i++] << "device" << "%busy" << "avque" << "r+w/s" << "blks/s" <<
@@ -146,7 +146,7 @@ int Parsesarstat::process_line()
     return error;
 }
 
-int Parsesarstat::getValues(QList<QString> list)
+int Parsesarstat::getValues(QStringList list)
 {
     error = 0;
     bool ok;
@@ -192,7 +192,7 @@ int Parsesarstat::getValues(QList<QString> list)
     return error;
 }
 
-int Parsesarstat::getHeaders(QList<QString> list)
+int Parsesarstat::getHeaders(QStringList list)
 {
     foundaheader = true;
     if ( headernumber ) {
@@ -213,7 +213,7 @@ int Parsesarstat::getHeaders(QList<QString> list)
     }
 }
 
-QList<double> Parsesarstat::getListDoubles(QList<QString> list, bool set)
+QList<double> Parsesarstat::getListDoubles(QStringList list, bool set)
 {
     error = 0;
     QList<double> listtmp;
@@ -231,7 +231,7 @@ QList<double> Parsesarstat::getListDoubles(QList<QString> list, bool set)
     return listtmp;
 }
 
-void Parsesarstat::getSZ(QList<QString> list)
+void Parsesarstat::getSZ(QStringList list)
 {
     QList<double> nrs;
     bool ok;
@@ -260,7 +260,7 @@ void Parsesarstat::getSZ(QList<QString> list)
     }
 }
 
-void Parsesarstat::buildHeaders()
+void Parsesarstat::insertLastValues()
 {
     QList<QString> prvheader = header;
     header.clear();

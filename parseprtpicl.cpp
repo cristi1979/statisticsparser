@@ -55,7 +55,7 @@ int Parseprtpicl::process_line()
         }
     }
 
-    for (int i=0; i<max_nr_of_subblock_lines; i++){
+    for (unsigned int i=0; i<max_nr_of_subblock_lines; i++){
         if ( (values_positions.indexOf(i) < 0 || headers_positions.indexOf(i) < 0) && matchLine(i) ){
             return 0;
         }

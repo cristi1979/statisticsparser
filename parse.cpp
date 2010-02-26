@@ -142,8 +142,8 @@ int Parse::run()
     if ( isValidData() ) {
         ds.values.insert(intTime, crtBlockValues);
     }
-    buildHeaders();
     qWarning() << "Elapsed time in parser:" << runtime.elapsed();
+    qWarning() << "Number of blocks:" << blockNumber;
     runtime.restart();
     if ( ds.values.isEmpty()) {
         qDebug() << "Nothing to send to rrd";
@@ -206,10 +206,6 @@ void Parse::sendToRRD()
     } else {
         setError(1, "Error sending data to rrd.");
     }
-}
-
-void Parse::buildHeaders()
-{
 }
 
 void Parse::insertLastValues()

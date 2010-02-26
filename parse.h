@@ -13,6 +13,7 @@
 
 #define SAMPLE_INTERVAL 30
 
+//http://docs.sun.com/app/docs/doc/819-2582/addgw?l=en&q=mpstat&a=view
 const QString stringDSType[] = {
     "GAUGE",
     "COUNTER",
@@ -58,7 +59,6 @@ protected:
     virtual void setTime();
     virtual int process_line() = 0;
     virtual bool newBlock();
-    virtual void buildHeaders();
     virtual void insertLastValues();
 private:
     RRDTool *rrd;
