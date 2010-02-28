@@ -23,7 +23,6 @@ private:
     int getValues(QStringList list);
     int getHeaders(QStringList list);
     void insertLastValues();
-    QList<double> getListDoubles(QStringList, bool set = true);
 };
 
 #endif // PARSESARSTAT_H

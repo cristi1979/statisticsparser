@@ -35,25 +35,19 @@ int Parsedfstat::process_line()
         break;
         default: {
                 if ( crtlist.at(0).startsWith("/dev/") ) {
-                    bool ok1, ok2, ok3, ok4;
-                    double used = crtlist.at(list_header.indexOf("used")).toDouble(&ok1);
-                    double total = crtlist.at(list_header.indexOf("kbytes")).toDouble(&ok2);
-                    double avail = crtlist.at(list_header.indexOf("avail")).toDouble(&ok3);
                     QString tmp = crtlist.at(list_header.indexOf("capacity"));
-                    double capacity = tmp.remove(tmp.length()-1,1).toDouble(&ok4);
-                    if ( ok1 && ok2 && ok3 && ok4 ) {
-                        double val1 = (double)used * 100 / ((double)avail + (double)used) + 0.5;
-                        double val2 = (double)used * 100 / (double)total + 0.5;
-//                        qDebug() << "total" << QString::number(total) << \
-//                                "used" << QString::number(used) << \
-//                                "avail" << QString::number(avail) << \
-//                                "capacity" << QString::number(capacity) << \
-//                                "procent 1" << QString::number(val1,'g',4) << \
-//                                "procent 2" << QString::number(val2,'g',4);
-                        crtBlockValues << capacity;
+                    tmp.chop(1);
+                    QStringList tmplist;
+                    tmplist << crtlist.at(list_header.indexOf("used"))
+                            << crtlist.at(list_header.indexOf("kbytes"))
+                            << crtlist.at(list_header.indexOf("avail"))
+                            << tmp;
+                    QList<double> allvals = getListDoubles(tmplist);
+                    if ( !allvals.isEmpty() ) {
+                        crtBlockValues << allvals.last();
                         header << crtlist.at(0) + " mounted at " + \
                                 crtlist.at(crtlist.size()-1)\
-                                + " with total size " + QString::number(total).toUtf8();
+                                + " with total size " + crtlist.at(list_header.indexOf("kbytes"));
                     } else {
                         setError(1, "used or capacity are not numbers.");
                     }

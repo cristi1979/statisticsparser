@@ -15,46 +15,38 @@ Parsempstat::Parsempstat()
 
 int Parsempstat::process_line()
 {
+    QStringList crtlist = line.simplified().split(' ');
+    if ( line.isEmpty() ){
+        blockNumber--;
+        return 0;
+    }
+    if ( crtlist.size() == list_header.size() ) {
+        error = 0;
+        if ( crtlist == list_header ){
+            header = crtlist;
+        } else {
+            crtBlockValues = getListDoubles(crtlist);
+        }
+        return error;
+    } else {
+        setError(1, "Unknown line. All lines should have the same length.");
+        return error;
+    }
 }
 
 bool Parsempstat::newBlock()
 {
+    //every line is a new block
+    process_line();
+    return true;
 }
 
 void Parsempstat::setTime()
 {
     if ( blockNumber == 0 ) {
         timeFromLine();
-//        firsttime = firsttime.fromTime_t(intTime);
-//        prvtime = firsttime.time();
-//        qDebug() << "Got first time.";
     } else {
         timeIncrement();
     }
-//        if ( intTime > 0 ) {
-            // prvtime should be the smallest. Always.
-            // Also we trust the time from the file it's not after some hours
-            // even if prvtime=23:59:59 and crttime=00:00:00
-            // skip hours because of timezones
-//            int dif = prvtime.secsTo(crttime) % SECONDS_IN_HOUR;
-//            if ( dif < 0 ) {
-//                dif += SECONDS_IN_HOUR;
-//            }
-//            if ( (dif % SAMPLE_INTERVAL) > SAMPLE_INTERVAL ) {
-//                qWarning() << "Difference between times is" << dif <<
-//                        "at line number" << lineNumber;
-//            }
-//            intTime += dif;
-//            prvtime = crttime;
-//            //lame. to keep the same block number
-//            blockNumber++;
-//            if (intTime > lasttimestamp) {
-//                process_line();
-//            }
-//            blockNumber--;
-//        } else {
-//            setError(2, "We could't get the first time.");
-//        }
-//    }
     blockLineNumber++;
 }

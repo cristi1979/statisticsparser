@@ -37,6 +37,7 @@ protected:
     QString block, line;
     QList<QString> header;
     QList<double> crtBlockValues;
+    QList<double> getListDoubles(QStringList, bool set = true);
 
     struct datasource {
         QStringList datasourcesType, datasourcesName;

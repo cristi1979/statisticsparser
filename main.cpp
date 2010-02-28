@@ -3,6 +3,7 @@
 #include "parsedfstat.h"
 #include "parsesarstat.h"
 #include "parsefanstat.h"
+#include "parsempstat.h"
 
 #include <getopt.h>
 
@@ -133,6 +134,7 @@ int main(int argc, char *argv[])
 #else
     file.setFile("/home/cristi/work/parser/logs/aus1-mind_sarstat_1.log");
     file.setFile("/home/cristi/work/parser/logs/aus1-mind_fanstat_1.log");
+    file.setFile("/home/cristi/work/parser/logs/aus1-mind_mpstat_1.log");
 //    file.setFile("/home/cristi/work/parser/logs/aus1-mind_dfstat_1.log");
     //    file.setFile("/home/cristi/work/parser/logs/aus1-mind_iostat_1.log");
 #endif
@@ -142,7 +144,8 @@ int main(int argc, char *argv[])
     //    Parseiostat q;
 //    Parsedfstat q;
 //    Parsesarstat q;
-    Parsefanstat q;
+//    Parsefanstat q;
+    Parsempstat q;
     q.setStatsFilename(fileslist);
     q.setRRDFileName(rrd);
     q.run();

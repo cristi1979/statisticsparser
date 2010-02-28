@@ -49,13 +49,7 @@ int Parseiostat::process_line()
             }
         break;
         case 2:{//cpu values
-                bool ok;
-                foreach (QString str, line.split(',')){
-                    crtBlockValues << str.toDouble(&ok);
-                    if ( !ok ) {
-                        setError(1, "cpu value not a number");
-                    }
-                }
+                crtBlockValues << getListDoubles(line.simplified().split(' '));
             }
         break;
         case 3: {//extra header
@@ -72,17 +66,10 @@ int Parseiostat::process_line()
             }
         break;
         default:{//devices values
-                QList<QString> crtlist = line.split(',');
+                QStringList crtlist = line.split(',');
                 int size = crtlist.size();
                 if ( devices.size() == size ) {
-                    bool ok;
-                    for ( int i=0; i < size - 1; i++ ){
-                        header << devices.at(i) + "_" + crtlist.at(size - 1);
-                        crtBlockValues << crtlist.at(i).toDouble(&ok);
-                        if ( !ok ) {
-                            setError(1, "value not a number:" + crtlist.at(i));
-                        }
-                    }
+                    crtBlockValues << getListDoubles(crtlist);
                 } else {
                     setError(1, "size of values different then size of devices.");
                     qCritical() << devices << crtlist;

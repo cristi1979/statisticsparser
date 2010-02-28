@@ -211,3 +211,21 @@ void Parse::sendToRRD()
 void Parse::insertLastValues()
 {
 }
+
+QList<double> Parse::getListDoubles(QStringList list, bool set)
+{
+    error = 0;
+    QList<double> listtmp;
+    bool ok;
+
+    for (int i=0; i< list.size(); i++){
+        double nr = list.at(i).toDouble(&ok);
+        if ( !ok && set ) {
+            setError(1, "One of the fields is not a number:" + list.at(i));
+            listtmp.clear();
+            break;
+        }
+        listtmp << nr;
+    }
+    return listtmp;
+}
