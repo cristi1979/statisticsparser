@@ -7,10 +7,8 @@
 class Parsefanstat : public Parseprtpicl
 {
 public:
-    Parsefanstat(QFileInfo);
+    Parsefanstat(QList<QFileInfo>);
     Parsefanstat();
-    void setStatsFilename(QFileInfo name);
-    int run();
 private:
     void initdata();
 };

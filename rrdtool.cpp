@@ -474,9 +474,9 @@ void RRDTool::dump()
     time.start();
     here = "dump";
 
-//    stringArguments << "dump" << inforrd->getDatabasePath();
-
     QStringList stringArguments;
+    stringArguments << "dump" << rrddatabasename.absoluteFilePath();
+
     run(stringArguments);
 }
 

@@ -13,6 +13,7 @@
 
 #define SAMPLE_INTERVAL 30
 
+//http://docs.sun.com/app/docs/doc/819-2582/addgw?l=en&q=mpstat&a=view
 const QString stringDSType[] = {
     "GAUGE",
     "COUNTER",
@@ -23,19 +24,20 @@ const QString stringDSType[] = {
 class Parse
 {
 public:
-    Parse(QFileInfo name);
+    Parse(QList<QFileInfo> name);
     Parse();
     ~Parse();
     int run();
-    void setStatsFilename(QFileInfo name);
+    void setStatsFilename(QList<QFileInfo> name);
     void setRRDFileName(QFileInfo name);
 
 protected:
     quint64 lineNumber, blockNumber, intTime, error, blockLineNumber, lasttimestamp;
-    QFile statisticsfile;
-    QByteArray block, line;
-    QList<QByteArray> header;
+    QList<QFileInfo> statisticsfiles;
+    QString block, line;
+    QList<QString> header;
     QList<double> crtBlockValues;
+    QList<double> getListDoubles(QStringList, bool set = true);
 
     struct datasource {
         QStringList datasourcesType, datasourcesName;
@@ -50,7 +52,7 @@ protected:
         yDSTYPELAST
     } dstype;
 
-    void setError(int, QByteArray = "");
+    void setError(int, QString = "");
     void timeIncrement();
     void timeFromLine();
     void printMap();
@@ -58,7 +60,7 @@ protected:
     virtual void setTime();
     virtual int process_line() = 0;
     virtual bool newBlock();
-    virtual void buildHeaders();
+    virtual void insertLastValues();
 private:
     RRDTool *rrd;
     QRegExp date_regex;

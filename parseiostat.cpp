@@ -1,13 +1,12 @@
 #include "parseiostat.h"
 using namespace std;
 
-Parseiostat::Parseiostat(QFileInfo name)
+Parseiostat::Parseiostat(QList<QFileInfo> name)
 {
-    statisticsfile.setFileName(name.absoluteFilePath());
+    statisticsfiles = name;
     list_cpu << "us" << "sy" << "wt" << "id";
     list_disk << "r/s" << "w/s" << "kr/s" << "kw/s" << "wait" \
             << "actv" << "wsvc_t" << "asvc_t" << "%w" << "%b" << "device";
-    qDebug() << "iostat name";
 }
 
 Parseiostat::Parseiostat()
@@ -15,12 +14,6 @@ Parseiostat::Parseiostat()
     list_cpu << "us" << "sy" << "wt" << "id";
     list_disk << "r/s" << "w/s" << "kr/s" << "kw/s" << "wait" \
             << "actv" << "wsvc_t" << "asvc_t" << "%w" << "%b" << "device";
-    qDebug() << "iostat empty";
-}
-
-void Parseiostat::setStatsFilename(QFileInfo name)
-{
-    statisticsfile.setFileName(name.absoluteFilePath());
 }
 
 void Parseiostat::setTime()
@@ -45,7 +38,7 @@ int Parseiostat::process_line()
             }
         break;
         case 1:{//cpu header
-                QList<QByteArray> crtlist = line.split(',');
+                QList<QString> crtlist = line.split(',');
                 if (list_cpu == crtlist) {
                     for ( int i=0; i < crtlist.size(); ++i ){
                         header << devices[0] + "_" + crtlist.at(i);
@@ -56,13 +49,7 @@ int Parseiostat::process_line()
             }
         break;
         case 2:{//cpu values
-                bool ok;
-                foreach (QString str, line.split(',')){
-                    crtBlockValues << str.toDouble(&ok);
-                    if ( !ok ) {
-                        setError(1, "cpu value not a number");
-                    }
-                }
+                crtBlockValues << getListDoubles(line.simplified().split(' '));
             }
         break;
         case 3: {//extra header
@@ -79,30 +66,16 @@ int Parseiostat::process_line()
             }
         break;
         default:{//devices values
-                QList<QByteArray> crtlist = line.split(',');
+                QStringList crtlist = line.split(',');
                 int size = crtlist.size();
                 if ( devices.size() == size ) {
-                    bool ok;
-                    for ( int i=0; i < size - 1; i++ ){
-                        header << devices.at(i) + "_" + crtlist.at(size - 1);
-                        crtBlockValues << crtlist.at(i).toDouble(&ok);
-                        if ( !ok ) {
-                            setError(1, "value not a number:" + crtlist.at(i));
-                        }
-                    }
+                    crtBlockValues << getListDoubles(crtlist);
                 } else {
                     setError(1, "size of values different then size of devices.");
-                    qDebug() << devices << crtlist;
+                    qCritical() << devices << crtlist;
                 }
             }
         break;
     }
-    return error;
-}
-
-int Parseiostat::run()
-{
-    Parse::run();
-//    printMap();
     return error;
 }

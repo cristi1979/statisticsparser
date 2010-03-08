@@ -5,10 +5,11 @@
 #define LINE_NR_DEVICE 1
 #define LINE_NR_SZ 8
 #define LINE_NR_MEM 13
+#define DISK_PREFIX "disk_"
 
-Parsesarstat::Parsesarstat(QFileInfo name)
+Parsesarstat::Parsesarstat(QList<QFileInfo> name)
 {
-    statisticsfile.setFileName(name.absoluteFilePath());
+    statisticsfiles = name;
     initdata();
 }
 
@@ -17,14 +18,9 @@ Parsesarstat::Parsesarstat()
     initdata();
 }
 
-void Parsesarstat::setStatsFilename(QFileInfo name)
-{
-    statisticsfile.setFileName(name.absoluteFilePath());
-}
-
 void Parsesarstat::initdata()
 {
-    list_devices = new QList<QByteArray>[NUMBER_OF_HEADER_LINES];
+    list_devices = new QStringList[NUMBER_OF_HEADER_LINES];
     int i = 0;
     list_devices[i++] << "%usr" << "%sys" << "%wio" << "%idle";
     list_devices[i++] << "device" << "%busy" << "avque" << "r+w/s" << "blks/s" <<
@@ -60,7 +56,7 @@ bool Parsesarstat::newBlock()
     if ( blockNumber == 0 ) {
         return Parse::newBlock();
     } else {
-        QList<QByteArray> strtime = line.simplified().split(' ').at(0).split(':');
+        QList<QString> strtime = line.simplified().split(' ').at(0).split(':');
         if ( strtime.size() != 3 ) {
             return false;
         }
@@ -100,7 +96,7 @@ void Parsesarstat::setTime()
                 dif += SECONDS_IN_HOUR;
             }
             if ( (dif % SAMPLE_INTERVAL) > SAMPLE_INTERVAL ) {
-                qDebug() << "Difference between times is" << dif <<
+                qWarning() << "Difference between times is" << dif <<
                         "at line number" << lineNumber;
             }
             intTime += dif;
@@ -133,7 +129,7 @@ int Parsesarstat::process_line()
         return 0;
     }
 
-    QList<QByteArray> crtlist = line.simplified().split(' ');
+    QList<QString> crtlist = line.simplified().split(' ');
     //if we are at the first line after the first block
     if ( (blockLineNumber == 0) && (blockNumber > 1) ) {
         if (crtlist.at(0).split(':').size() == 3) {
@@ -150,7 +146,7 @@ int Parsesarstat::process_line()
     return error;
 }
 
-int Parsesarstat::getValues(QList<QByteArray> list)
+int Parsesarstat::getValues(QStringList list)
 {
     error = 0;
     bool ok;
@@ -174,7 +170,7 @@ int Parsesarstat::getValues(QList<QByteArray> list)
             if ( error || ( nrs.size() != 2 ) ){
                 //disks
                 if ( list.size() == list_devices[1].size() ) {
-                    header << list.at(0);
+                    header << DISK_PREFIX + list.at(0);
                     list.removeAt(0);
                     crtBlockValues << getListDoubles(list);
                 } else {
@@ -189,16 +185,15 @@ int Parsesarstat::getValues(QList<QByteArray> list)
                 crtBlockValues << getListDoubles(list);
             }else {
                 setError(1, "Number of devices does not match the header:");
-                qDebug() << list_devices[blockLineNumber - header.size() + 1] << list;
+                qCritical() << list_devices[blockLineNumber - header.size() + 1] << list;
             }
         }
     }
     return error;
 }
 
-int Parsesarstat::getHeaders(QList<QByteArray> list)
+int Parsesarstat::getHeaders(QStringList list)
 {
-//    qDebug() << "In header.";
     foundaheader = true;
     if ( headernumber ) {
         foundsecondheader = true;
@@ -218,26 +213,7 @@ int Parsesarstat::getHeaders(QList<QByteArray> list)
     }
 }
 
-QList<double> Parsesarstat::getListDoubles(QList<QByteArray> list, bool set)
-{
-    error = 0;
-    QList<double> listtmp;
-    bool ok;
-
-    for (int i=0; i< list.size(); i++){
-        double nr = list.at(i).toDouble(&ok);
-        qDebug() <<list.at(i)<<nr<<line;
-        if ( !ok && set ) {
-            setError(1, "One of the fields is not a number:" + list.at(i));
-            listtmp.clear();
-            break;
-        }
-        listtmp << nr;
-    }
-    return listtmp;
-}
-
-void Parsesarstat::getSZ(QList<QByteArray> list)
+void Parsesarstat::getSZ(QStringList list)
 {
     QList<double> nrs;
     bool ok;
@@ -262,13 +238,13 @@ void Parsesarstat::getSZ(QList<QByteArray> list)
          }
     }else {
         setError(1, "Number of devices does not match the header:");
-        qDebug() << list_devices[blockLineNumber - header.size() + 1] << list;
+        qCritical() << list_devices[blockLineNumber - header.size() + 1] << list;
     }
 }
 
-void Parsesarstat::buildHeaders()
+void Parsesarstat::insertLastValues()
 {
-    QList<QByteArray> prvheader = header;
+    QList<QString> prvheader = header;
     header.clear();
     //the big header
     for (int i=0;i<NUMBER_OF_HEADER_LINES;i++){

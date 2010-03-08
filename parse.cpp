@@ -3,14 +3,12 @@
 Parse::Parse()
 {
     init();
-    qDebug() << "main empty";
 }
 
-Parse::Parse(QFileInfo name)
+Parse::Parse(QList<QFileInfo> name)
 {
     init();
-    statisticsfile.setFileName(name.absoluteFilePath());
-    qDebug() << "main name";
+    statisticsfiles = name;
 }
 
 Parse::~Parse()
@@ -19,9 +17,9 @@ Parse::~Parse()
 
 }
 
-void Parse::setStatsFilename(QFileInfo name)
+void Parse::setStatsFilename(QList<QFileInfo> name)
 {
-    statisticsfile.setFileName(name.absoluteFilePath());
+    statisticsfiles = name;
 }
 
 void Parse::setRRDFileName(QFileInfo name)
@@ -45,10 +43,11 @@ void Parse::setTime()
     timeFromLine();
 }
 
-void Parse::setError(int nr, QByteArray string)
+void Parse::setError(int nr, QString string)
 {
     error = nr;
     qCritical() << "Problem at line number" << QString::number(lineNumber) << ":" << string;
+    qCritical() << line;
 }
 
 void Parse::clear()
@@ -91,55 +90,60 @@ int Parse::run()
     runtime.start();
     qWarning() << runtime.currentTime();
 
-    if (!statisticsfile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        qCritical() << statisticsfile.errorString() << " : "
-                << statisticsfile.fileName() << "." << endl;
-        return statisticsfile.error();
-    }
-    clear();
-    lasttimestamp = rrd->last().toInt();
+    QFile file;
+    for (int i=0; i< statisticsfiles.size(); i++) {
+        file.setFileName(statisticsfiles.at(i).absoluteFilePath());
+        if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            qCritical() << file.errorString() << " : "
+                    << file.fileName() << "." << endl;
+            return file.error();
+        }
+        clear();
+        lasttimestamp = rrd->last().toInt();
 
-    QList<QByteArray> prev_header;
-    while ( !statisticsfile.atEnd() ) {
-        line = statisticsfile.readLine().trimmed();
-        lineNumber++;
-        if ( newBlock() ) {
-            //new date: insert previous data, clear all
-            if ( !prev_header.isEmpty() && (prev_header != header) ) {
-                setError(2, "Header error. We don't know which one is correct. Bail out.");
-                qCritical() << "previous header" << prev_header;
-                qCritical() << "current header" << header;
-                return error;
-            }
-            if ( isValidData() ) {
-                ds.values.insert(intTime, crtBlockValues);
-            } else {
-                if ( !crtBlockValues.isEmpty() ) {
-                    setError(1, "Error inserting the data until this line." );
+        QList<QString> prev_header;
+        while ( !file.atEnd() ) {
+            line = file.readLine().trimmed();
+            lineNumber++;
+            if ( newBlock() ) {
+                //new date: insert previous data, clear all
+                if ( !prev_header.isEmpty() && (prev_header != header) ) {
+                    setError(2, "Header error. We don't know which one is correct. Bail out.");
+                    qCritical() << "previous header" << prev_header;
+                    qCritical() << "current header" << header;
+                    return error;
+                }
+                if ( isValidData() ) {
+                    ds.values.insert(intTime, crtBlockValues);
+                } else {
+                    if ( !crtBlockValues.isEmpty() ) {
+                        setError(1, "Error inserting the data until this line." );
+                    }
+                }
+
+                prev_header = header;
+                clear();
+
+                setTime();
+                blockNumber++;
+                block += QString::number(intTime) + "\n";
+            } else if ( !error ) {
+                //in data block
+                block += line + "\n";
+                if ( (intTime > lasttimestamp) && !process_line() ) {
+                    blockLineNumber++;
                 }
             }
-
-            prev_header = header;
-            clear();
-
-            setTime();
-            blockNumber++;
-            block += QString::number(intTime) + "\n";
-        } else if ( !error ) {
-            //in data block
-            block += line + "\n";
-            if ( (intTime > lasttimestamp) && !process_line() ) {
-                blockLineNumber++;
-            }
         }
+        file.close();
     }
-    statisticsfile.close();
 
+    insertLastValues();
     if ( isValidData() ) {
         ds.values.insert(intTime, crtBlockValues);
     }
-    buildHeaders();
     qWarning() << "Elapsed time in parser:" << runtime.elapsed();
+    qWarning() << "Number of blocks:" << blockNumber;
     runtime.restart();
     if ( ds.values.isEmpty()) {
         qDebug() << "Nothing to send to rrd";
@@ -151,7 +155,7 @@ int Parse::run()
         qWarning() << "Elapsed time in rrd:" << runtime.elapsed();
     } else {
         setError(1, "Headers not the same size as values.");
-        qCritical() << "\t" << header.size() << ds.values.begin().value().size() << header << ds.values.begin().value();
+        qCritical() << header.size() << ds.values.begin().value().size() << header << ds.values.begin().value();
     }
 
     return error;
@@ -172,8 +176,7 @@ void Parse::setDatasourceInfo()
     for (int i = 0; i < size; i++) {
         ds.datasourcesMax << "U";
         ds.datasourcesMin << "U";
-        ds.datasourcesName << QString::number(qChecksum(header.at(i), header.at(i).size()));
-        qDebug() << header.at(i)<<QString::number(qChecksum(header.at(i), header.at(i).size()));
+        ds.datasourcesName << QString::number(qChecksum(header.at(i).toAscii(), header.at(i).size()));
         ds.datasourcesType << stringDSType[yGAUGE];
      }
 }
@@ -194,15 +197,35 @@ void Parse::sendToRRD()
                     ds.datasourcesMax,
                     ds.values);
         rrd->create();
-        qDebug() << rrd->getError() << rrd->getOutput();
         if ( rrd->getError().isEmpty() || (rrd->getError() == rrd->getExpectedError()) ) {
             rrd->update();
+//            rrd->dump();
+        } else {
+            qWarning() << "rrd error:" << rrd->getError();
         }
     } else {
         setError(1, "Error sending data to rrd.");
     }
 }
 
-void Parse::buildHeaders()
+void Parse::insertLastValues()
 {
+}
+
+QList<double> Parse::getListDoubles(QStringList list, bool set)
+{
+    error = 0;
+    QList<double> listtmp;
+    bool ok;
+
+    for (int i=0; i< list.size(); i++){
+        double nr = list.at(i).toDouble(&ok);
+        if ( !ok && set ) {
+            setError(1, "One of the fields is not a number:" + list.at(i));
+            listtmp.clear();
+            break;
+        }
+        listtmp << nr;
+    }
+    return listtmp;
 }

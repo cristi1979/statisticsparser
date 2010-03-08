@@ -3,16 +3,15 @@
 
 #include "parse.h"
 
+//http://docs.sun.com/app/docs/doc/819-2582/addgt?l=en&q=mpstat&a=view
 class Parseiostat : public Parse
 {
 public:
-    Parseiostat(QFileInfo name);
+    Parseiostat(QList<QFileInfo> name);
     Parseiostat();
-    void setStatsFilename(QFileInfo name);
-    int run();
 
 private:
-    QList <QByteArray> list_cpu, list_disk, devices;
+    QStringList list_cpu, list_disk, devices;
     int process_line();
     void setTime();
 };

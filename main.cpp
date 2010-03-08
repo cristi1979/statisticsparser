@@ -3,6 +3,7 @@
 #include "parsedfstat.h"
 #include "parsesarstat.h"
 #include "parsefanstat.h"
+#include "parsempstat.h"
 
 #include <getopt.h>
 
@@ -43,7 +44,7 @@ void myMessageOutput(QtMsgType type, const char* msg)
     file.close();
 }
 
-void print_usage (QByteArray program_name)
+void print_usage (QString program_name)
 {
     qDebug() << "Usage:" << program_name << "options [ inputfiles ... ]";
     qDebug() <<
@@ -57,7 +58,7 @@ void print_usage (QByteArray program_name)
 void parse_arguments(int argc, char *argv[])
 {
     int c;
-    QByteArray program_name = argv[0];
+    QString program_name = argv[0];
 
     while (1)
     {
@@ -115,8 +116,6 @@ void parse_arguments(int argc, char *argv[])
             printf ("%s \n", argv[optind++]);
         putchar ('\n');
     }
-
-    exit (0);
 }
 
 int main(int argc, char *argv[])
@@ -134,19 +133,28 @@ int main(int argc, char *argv[])
     file.setFile("d:\\temp\\parsers\\aus1-mind_fanstat_1.log");
 #else
     file.setFile("/home/cristi/work/parser/logs/aus1-mind_sarstat_1.log");
-    //    file.setFile("/home/cristi/work/parser/logs/aus1-mind_fanstat_1.log");
-    //    file.setFile("/home/cristi/work/parser/logs/aus1-mind_dfstat_1.log");
+    file.setFile("/home/cristi/work/parser/logs/aus1-mind_fanstat_1.log");
+    file.setFile("/home/cristi/work/parser/logs/aus1-mind_mpstat_1.log");
+//    file.setFile("/home/cristi/work/parser/logs/aus1-mind_dfstat_1.log");
     //    file.setFile("/home/cristi/work/parser/logs/aus1-mind_iostat_1.log");
 #endif
+    QList<QFileInfo> fileslist;
+    fileslist << file;
     rrd.setFile("coco.rrd");
     //    Parseiostat q;
-    //    Parsedfstat q;
-    Parsesarstat q;
-    //    Parsefanstat q;
-    q.setStatsFilename(file);
+//    Parsedfstat q;
+//    Parsesarstat q;
+//    Parsefanstat q;
+    Parsempstat q;
+    q.setStatsFilename(fileslist);
     q.setRRDFileName(rrd);
     q.run();
     qDebug() << "FIN.";
+<<<<<<< HEAD
     exit (10);
     return app.exec();
+=======
+
+//    return app.exec();
+>>>>>>> 02611e5a4118bd299d81b7d694e110e895faf6f6
 }
