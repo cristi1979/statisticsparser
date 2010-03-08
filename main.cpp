@@ -148,5 +148,5 @@ int main(int argc, char *argv[])
     q.run();
     qDebug() << "FIN.";
     exit (10);
-    return a.exec();
+    return app.exec();
 }
