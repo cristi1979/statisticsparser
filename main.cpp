@@ -11,7 +11,7 @@ bool first = true;
 
 void myMessageOutput(QtMsgType type, const char* msg)
 {
-    QFile file("aaa_out");
+    QFile file("aaa_out.log");
     file.open(QIODevice::Append | QIODevice::Text);
 
     if ( first ) {
@@ -131,6 +131,7 @@ int main(int argc, char *argv[])
     //    file.setFile("d:\\temp\\parsers\\aus1-mind_dfstat_1.log");
     //    file.setFile("d:\\temp\\parsers\\aus1-mind_iostat_1.log");
     file.setFile("d:\\temp\\parsers\\aus1-mind_fanstat_1.log");
+    file.setFile("d:\\temp\\parsers\\aus1-mind_mpstat_1.log");
 #else
     file.setFile("/home/cristi/work/parser/logs/aus1-mind_sarstat_1.log");
     file.setFile("/home/cristi/work/parser/logs/aus1-mind_fanstat_1.log");
@@ -150,11 +151,6 @@ int main(int argc, char *argv[])
     q.setRRDFileName(rrd);
     q.run();
     qDebug() << "FIN.";
-<<<<<<< HEAD
     exit (10);
     return app.exec();
-=======
-
-//    return app.exec();
->>>>>>> 02611e5a4118bd299d81b7d694e110e895faf6f6
 }

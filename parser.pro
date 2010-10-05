@@ -2,6 +2,7 @@
 # Project created by QtCreator 2009-12-22T18:58:29
 # -------------------------------------------------
 QT -= gui
+QT += testlib
 TARGET = parser
 CONFIG += console
 CONFIG -= app_bundle
