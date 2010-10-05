@@ -11,7 +11,7 @@ bool first = true;
 
 void myMessageOutput(QtMsgType type, const char* msg)
 {
-    QFile file("aaa_out");
+    QFile file("aaa_out.log");
     file.open(QIODevice::Append | QIODevice::Text);
 
     if ( first ) {
